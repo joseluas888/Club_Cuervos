@@ -12,6 +12,9 @@
 		FB9202AD2AD8724600F185FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB9202AC2AD8724600F185FD /* Assets.xcassets */; };
 		FB9202B02AD8724600F185FD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB9202AF2AD8724600F185FD /* Preview Assets.xcassets */; };
 		FB9202B72AD8725D00F185FD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9202B62AD8725D00F185FD /* LoginView.swift */; };
+		FBE277BA2AE05C6C00FB8FCB /* ReciboView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE277B92AE05C6C00FB8FCB /* ReciboView.swift */; };
+		FBE277BC2AE05D0E00FB8FCB /* HeaderReciboView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE277BB2AE05D0E00FB8FCB /* HeaderReciboView.swift */; };
+		FBE277BE2AE05D5500FB8FCB /* NoRecibidoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE277BD2AE05D5500FB8FCB /* NoRecibidoView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +24,9 @@
 		FB9202AC2AD8724600F185FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FB9202AF2AD8724600F185FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FB9202B62AD8725D00F185FD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		FBE277B92AE05C6C00FB8FCB /* ReciboView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReciboView.swift; sourceTree = "<group>"; };
+		FBE277BB2AE05D0E00FB8FCB /* HeaderReciboView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderReciboView.swift; sourceTree = "<group>"; };
+		FBE277BD2AE05D5500FB8FCB /* NoRecibidoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoRecibidoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +62,9 @@
 				FB9202A82AD8724500F185FD /* Caritas_CuervosApp.swift */,
 				FB9202AA2AD8724500F185FD /* ContentView.swift */,
 				FB9202B62AD8725D00F185FD /* LoginView.swift */,
+				FBE277B92AE05C6C00FB8FCB /* ReciboView.swift */,
+				FBE277BD2AE05D5500FB8FCB /* NoRecibidoView.swift */,
+				FBE277BB2AE05D0E00FB8FCB /* HeaderReciboView.swift */,
 				FB9202AC2AD8724600F185FD /* Assets.xcassets */,
 				FB9202AE2AD8724600F185FD /* Preview Content */,
 			);
@@ -142,7 +151,10 @@
 			files = (
 				FB9202B72AD8725D00F185FD /* LoginView.swift in Sources */,
 				FB9202AB2AD8724500F185FD /* ContentView.swift in Sources */,
+				FBE277BA2AE05C6C00FB8FCB /* ReciboView.swift in Sources */,
 				FB9202A92AD8724500F185FD /* Caritas_CuervosApp.swift in Sources */,
+				FBE277BE2AE05D5500FB8FCB /* NoRecibidoView.swift in Sources */,
+				FBE277BC2AE05D0E00FB8FCB /* HeaderReciboView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
