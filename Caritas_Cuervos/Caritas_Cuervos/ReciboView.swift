@@ -12,6 +12,7 @@ struct ReciboView: View {
     @State var blanco:Color = Color(red:0.9882352941176471, green:0.9803921568627451, blue:0.9607843137254902)
     @State var negro:Color = Color(red:0.17254901960784313, green:0.17254901960784313, blue:0.17254901960784313)
     @State var naranja:Color = Color(red:1, green:0.4627450980392157, blue:0.17254901960784313)
+    @State var mostrarConfirmacion:Bool = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -75,7 +76,7 @@ struct ReciboView: View {
                     Spacer()
                     
                     Button("Dinero recolectado"){
-                        dismiss()
+                        mostrarConfirmacion.toggle()
                     }
                     .frame(width: 150)
                     .frame(height: 75)
@@ -83,6 +84,17 @@ struct ReciboView: View {
                     .foregroundColor(blanco)
                     .cornerRadius(20)
                     .fontWeight(.bold)
+                    .alert(isPresented: $mostrarConfirmacion) {
+                        Alert(
+                            title: Text("¿Deseas guardar la información?"),
+                            message: Text("No podrás modificar este recibo tras guardar la información"),
+                            primaryButton: .cancel(
+                                Text("Cancelar")),
+                            secondaryButton: .default(
+                                Text("Aceptar"),
+                                action: {dismiss()})
+                        )
+                    }
                 }
                 .padding(.top, 30.0)
             }
