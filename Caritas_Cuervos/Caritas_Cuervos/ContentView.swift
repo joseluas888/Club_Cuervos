@@ -10,13 +10,13 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         NavigationStack{
-            VStack {
+            VStack{
                 Image(systemName: "globe")
                     .imageScale(.large)
                     .foregroundColor(.accentColor)
                 Text("Hello, world!")
-                NavigationLink("Ir a recibo"){
-                    ReciboView()
+                NavigationLink("Ir a principal"){
+                    PaginaPrincipalView()
                 }
             }
             .padding()

@@ -15,76 +15,66 @@ struct ElementosPrincipalView: View {
     @State var verde:Color = Color(red:0.792156862745098, green:0.8666666666666667, blue:0.8274509803921568)
     @State var nombre:String = "Nombre Nombre Apellido Apellido"
     @State var recibo:String = "000"
-    @State var donante:String = "000"
-    @State var cantidad:String = "$000.00"
+    @State var cantidad:String = "000.00"
     
     var body: some View {
-        NavigationStack{
-            ZStack{
-                VStack{
-                    
-                }
-                .padding(.all, 20.0)
-                .frame(width: 350.0, height: 200.0)
-                .background(blanco)
-                .border(blanco)
-                .shadow(radius: 5, x: 5, y: 5)
-                VStack(alignment: .leading){
-                    Text("\(nombre)")
+        ZStack{
+            VStack{
+                
+            }
+            .padding(.all, 20.0)
+            .frame(width: 350.0, height: 200.0)
+            .background(blanco)
+            .border(blanco)
+            .shadow(radius: 5, x: 5, y: 5)
+            
+            VStack(alignment: .leading){
+                Text("\(nombre)")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .frame(height: 60.0)
+                    .foregroundColor(negro)
+                
+                HStack{
+                    Text("Recibo: \(recibo)")
+                        .font(.headline)
+                        .fontWeight(.regular)
+                        .foregroundColor(negro)
+                    Spacer()
+                    Text("$\(cantidad)")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .frame(height: 60.0)
-                        .foregroundColor(negro)
-                    
-                    HStack{
-                        VStack(alignment: .leading){
-                            Text("Recibo: \(recibo)")
-                                .font(.headline)
-                                .fontWeight(.regular)
-                                .foregroundColor(negro)
-                                
-                            Text("Donante: \(donante)")
-                                .font(.headline)
-                                .fontWeight(.regular)
-                                .foregroundColor(negro)
-                        }
-                        Spacer()
-                        Text("\(cantidad)")
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                            .foregroundColor(naranja)
-                    }
-                    HStack{
-                        NavigationLink("Ver información"){
-                            ReciboView()
-                        }
-                        .frame(width: 145, height: 50.0)
-                        .background(verde)
-                        .foregroundColor(negro)
-                        .cornerRadius(20)
-                        .font(.footnote)
-                        .fontWeight(.bold)
-                        Spacer()
-                        NavigationLink("Recolectar"){
-                            ReciboView()
-                        }
-                        .frame(width: 140, height: 50.0)
-                        .background(azul)
-                        .foregroundColor(blanco)
-                        .cornerRadius(20)
-                        .font(.footnote)
-                        .fontWeight(.bold)
-                    }
-                    .padding(.top, 5.0)
+                        .foregroundColor(naranja)
                 }
-                .padding(.all, 20.0)
-                .frame(width: 350.0, height: 200.0)
-                .background(blanco)
-                .border(blanco)
+                HStack{
+                    NavigationLink(destination: ReciboView()){
+                        Text("Ver información")
+                    }
+                    .frame(width: 145, height: 50.0)
+                    .background(verde)
+                    .foregroundColor(negro)
+                    .cornerRadius(10)
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                    Spacer()
+                    NavigationLink(destination: ReciboView()){
+                        Text("Recolectar")
+                    }
+                    .frame(width: 140, height: 50.0)
+                    .background(azul)
+                    .foregroundColor(blanco)
+                    .cornerRadius(10)
+                    .font(.footnote)
+                    .fontWeight(.bold)
+                }
+                .padding(.top, 5.0)
             }
+            .padding(.all, 20.0)
+            .frame(width: 350.0, height: 200.0)
             .background(blanco)
+            .border(blanco)
         }
-        .background(blanco)
+        .padding(.top, 20.0)
     }
 }
 

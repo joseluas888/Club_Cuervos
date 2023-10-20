@@ -18,7 +18,15 @@ struct PaginaPrincipalView: View {
     var body: some View {
         VStack(alignment: .center){
             HeaderPrincipalView()
-            ElementosPrincipalView()
+            ScrollView{
+                LazyVStack{
+                    ElementosPrincipalView()
+                    ElementosPrincipalView()
+                    ElementosPrincipalView()
+                    ElementosPrincipalView()
+                    ElementosPrincipalView()
+                }
+            }
             Spacer()
         }
         .padding(.vertical)
