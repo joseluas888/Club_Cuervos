@@ -15,7 +15,7 @@ struct ReciboView: View {
     @State var mostrarConfirmacion:Bool = false
     @State var nombre2:String = "Nombre Nombre Apellido Apellido"
     @State var recibo2:String = "000"
-    @State var cantidad2:String = "$000.00"
+    @State var cantidad2:String = "000.00"
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -50,7 +50,7 @@ struct ReciboView: View {
                         .foregroundColor(negro)
                         .padding(.leading, 10.0)
                     Spacer()
-                    Text("\(cantidad2)")
+                    Text("$\(cantidad2)")
                         .font(.title2)
                         .fontWeight(.bold)
                         .padding(.trailing, 10.0)
