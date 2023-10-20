@@ -7,42 +7,49 @@
 
 import Foundation
 
-func CallAPIUsuario() -> Array<Usuario>{
-    var usuarioList: Array<Usuario> = []
-    guard let url = URL(string: "http://10.14.255.86:8088")
-    else{
-        print("No pude asignar el URL del API")
-        return usuarioList
+func CallAPIUsuario(_ usuario: String, _ contrasena: String, completion: @escaping (Bool) -> Void) {
+    let url = URL(string: "http://10.14.255.86:8084/login")!
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+    
+    let parameters: [String: Any] = [
+        "nombreUsuario": usuario,
+        "password": contrasena
+    ]
+    
+    do {
+        request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        print(request)
+    } catch let error {
+        print(error.localizedDescription)
+        completion(false)
     }
-    let group = DispatchGroup()
-    group.enter()
     
-    
-    let task = URLSession.shared.dataTask(with: url){
-        data, response, error in
+    let task = URLSession.shared.dataTask(with: request) { data, response, error in
+        guard let data = data, error == nil else {
+            print(error?.localizedDescription ?? "No data")
+            completion(false)
+            return
+        }
         
-        let jsonDecoder = JSONDecoder()
-        if (data != nil){
-            do{
-                usuarioList = try jsonDecoder.decode([Usuario].self, from: data!)
-                for usuarioItem in usuarioList {
-                    print("Id: \(usuarioItem.id) - Usuario: \(usuarioItem.matricula) - Contraseña \(usuarioItem.password)")
-                }
+        if let httpResponse = response as? HTTPURLResponse {
+            if httpResponse.statusCode == 200 {
+                completion(true)
+            } else {
+                completion(false)
             }
-            catch{
-                print(error)
-            }
-            group.leave()
+        }
+        
+        do {
+            let jsonResponse = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any]
+            
+            print(jsonResponse!)
+            
+        } catch let error {
+            print(error.localizedDescription)
         }
     }
+    
     task.resume()
-    group.wait()
-    print("*******  SALIENDO DE LA FUNCIÓN  *******")
-    return usuarioList
-}
-
-struct Usuario: Codable, Identifiable{
-    var id: Int
-    var matricula: Int
-    var password: String
 }
