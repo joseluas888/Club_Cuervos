@@ -57,7 +57,7 @@ struct ElementosPrincipalView: View {
                     .font(.footnote)
                     .fontWeight(.bold)
                     Spacer()
-                    NavigationLink(destination: ReciboView()){
+                    NavigationLink(destination: ReciboView(nombre2: nombre, recibo2: recibo, cantidad2: cantidad)){
                         Text("Recolectar")
                     }
                     .frame(width: 140, height: 50.0)

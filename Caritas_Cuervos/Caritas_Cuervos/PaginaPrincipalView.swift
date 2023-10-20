@@ -21,10 +21,11 @@ struct PaginaPrincipalView: View {
             ScrollView{
                 LazyVStack{
                     ElementosPrincipalView()
-                    ElementosPrincipalView()
-                    ElementosPrincipalView()
-                    ElementosPrincipalView()
-                    ElementosPrincipalView()
+                    ElementosPrincipalView(nombre: "Ángel Gael García Rangel", recibo: "2207", cantidad: "100.00")
+                    ElementosPrincipalView(nombre: "Alejandro Fuentes Martínez", recibo: "2609", cantidad: "200.00")
+                    ElementosPrincipalView(nombre: "José Elias Plascencia Cruz", recibo: "2908", cantidad: "300.00")
+                    ElementosPrincipalView(nombre: "Nallely Lizbeth Serna Rivera", recibo: "2307", cantidad: "400.00")
+                    ElementosPrincipalView(nombre: "José Alejandro Salazar Anza", recibo: "0912", cantidad: "500.00")
                 }
             }
             Spacer()
