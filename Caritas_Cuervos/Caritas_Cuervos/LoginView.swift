@@ -15,9 +15,6 @@ extension Color{
 struct LoginView: View {
     
     @State private var usuario = ""
-    @State private var contrasena = ""
-    @State var isNavigating = false
-    
     
     var body: some View {
         
@@ -31,21 +28,16 @@ struct LoginView: View {
             TextField("Usuario", text: $usuario)
                 .font(.system(size: 23))
                 .padding(.leading, 40.0)
-
             Rectangle()
                 .padding(.horizontal)
                 .frame(height: 1)
                 .foregroundColor(.gray)
                 .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
             
-            TextField("Contraseña", text: $contrasena)
+            TextField("Contraseña", text: $usuario)
                 .font(.system(size: 23))
                 .padding(.leading, 40.0)
                 .padding(.top, 60.0)
-
-            //Image(systemName: "eye.fill")
-            //Image(systemName: "eye.slash")
-            
             Rectangle()
                 .padding(.horizontal)
                 .frame(height: 1)
@@ -54,13 +46,6 @@ struct LoginView: View {
             Spacer()
             
             Button("Iniciar Sesión"){
-                // isNavigating
-                CallAPIUsuario(usuario, contrasena){
-                    login in
-                    if login {
-                        isNavigating = true
-                    }
-                }
                 
             }
             .font(.system(size: 25).bold())
@@ -69,9 +54,7 @@ struct LoginView: View {
             .background(Color.azul)
             .foregroundColor(Color.blanco)
             .cornerRadius(8)
-            .navigationDestination(isPresented: $isNavigating){
-                Holaaaaa()
-            }
+            
             
             
             Spacer()
