@@ -14,7 +14,6 @@ struct NoRecibidoView: View {
     @State var naranja:Color = Color(red:1, green:0.4627450980392157, blue:0.17254901960784313)
     @State var gris:Color = Color(red:0.8509803921568627, green:0.8509803921568627, blue:0.8509803921568627)
     @State var observaciones:String = ""
-    @State var mostrarAdvertencia:Bool = false
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
@@ -38,7 +37,7 @@ struct NoRecibidoView: View {
                     .foregroundColor(negro)
                     .padding(.top, 30.0)
                 
-                TextField("", text: $observaciones, axis: .vertical)
+                TextField("Hola", text: $observaciones, axis: .vertical)
                     .padding(.horizontal)
                     .padding(.vertical)
                     .background(gris)
@@ -51,14 +50,7 @@ struct NoRecibidoView: View {
                     .background(negro)
                     .padding(.vertical, 20.0)
                 
-                Button(action:{
-                    if observaciones == ""{
-                        mostrarAdvertencia.toggle()
-                    }
-                    else{
-                        dismiss()
-                    }
-                }){
+                Button(action:{dismiss()}){
                     Text("Confirmar observaciones")
                         .padding(.horizontal, 10.0)
                         .foregroundColor(azul)
@@ -68,13 +60,6 @@ struct NoRecibidoView: View {
                     }
                     .background(blanco)
                     .cornerRadius(20.0)
-                    .alert(isPresented: $mostrarAdvertencia) {
-                        Alert(
-                            title: Text("Observaciones en blanco"),
-                            message: Text("Falta agregar las observaciones del recibo no cobrado"),
-                            dismissButton: .default(Text("Aceptar"))
-                        )
-                    }
             }
             .padding(.horizontal, 30.0)
             Spacer()
