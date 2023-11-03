@@ -13,8 +13,9 @@ struct ElementosPrincipalView: View {
     @State var negro:Color = Color(red:0.17254901960784313, green:0.17254901960784313, blue:0.17254901960784313)
     @State var naranja:Color = Color(red:1, green:0.4627450980392157, blue:0.17254901960784313)
     @State var verde:Color = Color(red:0.792156862745098, green:0.8666666666666667, blue:0.8274509803921568)
-    @State var nombre:String = "Nombre Nombre Apellido Apellido"
-    @State var recibo:String = "000"
+    @State var direccion:String = "Calle #Casa, Colonia #CP"
+    @State var nombre:String = "Nombre Apellido"
+    @State var folio:String = "000"
     @State var cantidad:String = "000.00"
     
     var body: some View {
@@ -29,17 +30,23 @@ struct ElementosPrincipalView: View {
             .shadow(radius: 5, x: 5, y: 5)
             
             VStack(alignment: .leading){
-                Text("\(nombre)")
+                Text("\(direccion)")
                     .font(.title2)
                     .fontWeight(.bold)
                     .frame(height: 60.0)
                     .foregroundColor(negro)
                 
                 HStack{
-                    Text("Recibo: \(recibo)")
-                        .font(.headline)
-                        .fontWeight(.regular)
-                        .foregroundColor(negro)
+                    VStack(alignment: .leading){
+                        Text("\(nombre)")
+                            .font(.headline)
+                            .fontWeight(.regular)
+                            .foregroundColor(negro)
+                        Text("Folio: \(folio)")
+                            .font(.headline)
+                            .fontWeight(.regular)
+                            .foregroundColor(negro)
+                    }
                     Spacer()
                     Text("$\(cantidad)")
                         .font(.title2)
@@ -57,7 +64,7 @@ struct ElementosPrincipalView: View {
                     .font(.footnote)
                     .fontWeight(.bold)
                     Spacer()
-                    NavigationLink(destination: ReciboView(nombre2: nombre, recibo2: recibo, cantidad2: cantidad)){
+                    NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
                         Text("Recolectar")
                     }
                     .frame(width: 140, height: 50.0)
