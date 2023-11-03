@@ -7,6 +7,22 @@
 
 import SwiftUI
 
+struct Ficha: Identifiable, Hashable{
+    let f_direccion: String
+    let f_nombre: String
+    let f_folio: String
+    let f_cantidad: String
+    let id = UUID()
+}
+
+private var fichas_prueba = [
+    Ficha(f_direccion: "Calle de prueba #001, Colonia TEC 12345",f_nombre: "Ángel García", f_folio: "2207", f_cantidad: "100.00"),
+    Ficha(f_direccion: "Calle de prueba #002, Colonia TEC 12345", f_nombre: "Alejandro Fuentes", f_folio: "2609", f_cantidad: "200.00"),
+    Ficha(f_direccion: "Calle de prueba #003, Colonia TEC 12345", f_nombre: "José Plascencia", f_folio: "2908", f_cantidad: "300.00"),
+    Ficha(f_direccion: "Calle de prueba #004, Colonia TEC 12345", f_nombre: "Nallely Serna", f_folio: "2307", f_cantidad: "400.00"),
+    Ficha(f_direccion: "Calle de prueba #005, Colonia TEC 12345", f_nombre: "José Salazar", f_folio: "0912", f_cantidad: "500.00")
+]
+
 struct PaginaPrincipalView: View {
     @State var azul:Color = Color(red:0, green:0.5647058823529412, blue:0.6313725490196078)
     @State var blanco:Color = Color(red:0.9882352941176471, green:0.9803921568627451, blue:0.9607843137254902)
@@ -18,21 +34,25 @@ struct PaginaPrincipalView: View {
     var body: some View {
         VStack(alignment: .center){
             HeaderPrincipalView()
-            ScrollView{
-                LazyVStack{
-                    ElementosPrincipalView()
-                    ElementosPrincipalView(nombre: "Ángel Gael García Rangel", recibo: "2207", cantidad: "100.00")
-                    ElementosPrincipalView(nombre: "Alejandro Fuentes Martínez", recibo: "2609", cantidad: "200.00")
-                    ElementosPrincipalView(nombre: "José Elias Plascencia Cruz", recibo: "2908", cantidad: "300.00")
-                    ElementosPrincipalView(nombre: "Nallely Lizbeth Serna Rivera", recibo: "2307", cantidad: "400.00")
-                    ElementosPrincipalView(nombre: "José Alejandro Salazar Anza", recibo: "0912", cantidad: "500.00")
+            List(){
+                ForEach(fichas_prueba) { ficha in
+                    ElementosPrincipalView(direccion: ficha.f_direccion, nombre: ficha.f_nombre, folio: ficha.f_folio, cantidad: ficha.f_cantidad)
                 }
+                .onMove(perform: move)
+            }
+            .listStyle(.plain)
+            .toolbar{
+                EditButton()
             }
             Spacer()
         }
         .padding(.vertical)
         .background(blanco)
         .navigationBarBackButtonHidden(true)
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        fichas_prueba.move(fromOffsets: source, toOffset: destination)
     }
 }
 
