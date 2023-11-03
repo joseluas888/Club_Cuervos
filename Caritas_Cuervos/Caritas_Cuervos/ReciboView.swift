@@ -14,7 +14,7 @@ struct ReciboView: View {
     @State var naranja:Color = Color(red:1, green:0.4627450980392157, blue:0.17254901960784313)
     @State var mostrarConfirmacion:Bool = false
     @State var nombre2:String = "Nombre Nombre Apellido Apellido"
-    @State var recibo2:String = "000"
+    @State var folio2:String = "000"
     @State var cantidad2:String = "000.00"
     @Environment(\.dismiss) private var dismiss
     
@@ -39,7 +39,7 @@ struct ReciboView: View {
                     .foregroundColor(negro)
                     .padding(.vertical, 10.0)
                     .frame(height: 100.0)
-                Text("Recibo: \(recibo2)")
+                Text("Recibo: \(folio2)")
                     .font(.title3)
                     .fontWeight(.light)
                     .foregroundColor(negro)
