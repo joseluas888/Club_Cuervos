@@ -1,13 +1,13 @@
 //
-//  ElementosPrincipalView.swift
+//  ElementosYaCobradosView.swift
 //  Caritas_Cuervos
 //
-//  Created by Alumno on 20/10/23.
+//  Created by Alumno on 06/11/23.
 //
 
 import SwiftUI
 
-struct ExpandidosView: View {
+struct ExpandidosCobradosView: View {
     @Binding var push:Bool
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
@@ -19,6 +19,7 @@ struct ExpandidosView: View {
     @State var telFijo:String = "11 1111 1111"
     @State var telExtra:String = "22 2222 2222"
     @State var telCelular:String = "33 3333 3333"
+    @State var recibido:Bool = false
     
     var body: some View {
         ZStack{
@@ -51,7 +52,7 @@ struct ExpandidosView: View {
                     Text("$\(cantidad)")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(naranja)
+                        .foregroundColor(negro)
                 }
                 
                 VStack(alignment: .leading){
@@ -95,17 +96,24 @@ struct ExpandidosView: View {
                     .fontWeight(.bold)
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
-                    //NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
-                    Button(action: {self.push.toggle()}) {
-                        Text("Recolectar")
+                    if(recibido == true){
+                        Image(systemName: "checkmark")
+                            .foregroundColor(azul)
+                        Text("Recibido")
+                            .frame(width: 100, height: 50.0)
+                            .foregroundColor(azul)
+                            .font(.headline)
+                            .fontWeight(.bold)
                     }
-                    .frame(width: 140, height: 50.0)
-                    .background(azul)
-                    .foregroundColor(blanco)
-                    .cornerRadius(10)
-                    .font(.footnote)
-                    .fontWeight(.bold)
-                    .buttonStyle(PlainButtonStyle())
+                    else{
+                        Image(systemName: "xmark")
+                            .foregroundColor(naranja)
+                        Text("No Recibido")
+                            .frame(width: 100, height: 50.0)
+                            .foregroundColor(naranja)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                    }
                 }
                 .padding(.top, 5.0)
             }
@@ -114,17 +122,18 @@ struct ExpandidosView: View {
             .background(blanco)
             .border(blanco)
         }
-        .padding(.top, 20.0)
+        .padding(.top, 20)
     }
 }
 
-struct EncogidosView: View {
+struct EncogidosCobradosView: View {
     @Binding var push:Bool
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
     @State var folio:String = "000"
     @State var cantidad:String = "000.00"
+    @State var recibido:Bool = false
     
     var body: some View {
         ZStack{
@@ -157,7 +166,7 @@ struct EncogidosView: View {
                     Text("$\(cantidad)")
                         .font(.title2)
                         .fontWeight(.bold)
-                        .foregroundColor(naranja)
+                        .foregroundColor(negro)
                 }
                 HStack{
                     //NavigationLink(destination: DetallesDonanteView()){
@@ -172,21 +181,23 @@ struct EncogidosView: View {
                     .fontWeight(.bold)
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
-                    ZStack{
-                        Text("Recolectar")
-                            .frame(width: 140, height: 50.0)
-                            .background(azul)
-                            .foregroundColor(blanco)
-                            .cornerRadius(10)
-                            .font(.footnote)
+                    if(recibido == true){
+                        Image(systemName: "checkmark")
+                            .foregroundColor(azul)
+                        Text("Recibido")
+                            .frame(width: 100, height: 50.0)
+                            .foregroundColor(azul)
+                            .font(.headline)
                             .fontWeight(.bold)
-                            .buttonStyle(PlainButtonStyle())
-                        NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
-                        }
-                        .frame(width: 140, height: 50.0)
-                        .cornerRadius(10)
-                        .opacity(0)
-                        .buttonStyle(PlainButtonStyle())
+                    }
+                    else{
+                        Image(systemName: "xmark")
+                            .foregroundColor(naranja)
+                        Text("No Recibido")
+                            .frame(width: 100, height: 50.0)
+                            .foregroundColor(naranja)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
                     }
                 }
                 .padding(.top, 5.0)
@@ -200,28 +211,29 @@ struct EncogidosView: View {
     }
 }
 
-struct ElementosPrincipalView: View {
+struct ElementosYaCobradosView: View {
     @State private var push = false
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
     @State var folio:String = "000"
     @State var cantidad:String = "000.00"
+    @State var recibido:Bool = false
     
     var body: some View {
         ZStack {
             if !push {
-                EncogidosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad)
+                EncogidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, recibido: self.recibido)
             }
             if push {
-                ExpandidosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad)
+                ExpandidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, recibido: self.recibido)
             }
         }
     }
 }
 
-struct ElementosPrincipalView_Previews: PreviewProvider {
+struct ElementosYaCobradosView_Previews: PreviewProvider {
     static var previews: some View {
-        ElementosPrincipalView()
+        ElementosYaCobradosView()
     }
 }
