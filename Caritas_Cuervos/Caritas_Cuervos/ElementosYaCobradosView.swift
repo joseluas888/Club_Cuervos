@@ -218,6 +218,11 @@ struct ElementosYaCobradosView: View {
     @State var nombre:String = "Nombre Apellido"
     @State var folio:String = "000"
     @State var cantidad:String = "000.00"
+    @State var ref:String = "Una casa normal, de color normal"
+    @State var comentario:String = "Entregar cualquier dia, a cualquier hora"
+    @State var telFijo:String = "11 1111 1111"
+    @State var telExtra:String = "22 2222 2222"
+    @State var telCelular:String = "33 3333 3333"
     @State var recibido:Bool = false
     
     var body: some View {
@@ -226,7 +231,7 @@ struct ElementosYaCobradosView: View {
                 EncogidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, recibido: self.recibido)
             }
             if push {
-                ExpandidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, recibido: self.recibido)
+                ExpandidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, ref: self.ref, telFijo: self.telFijo, telExtra: self.telExtra, telCelular: self.telCelular, recibido: self.recibido)
             }
         }
     }

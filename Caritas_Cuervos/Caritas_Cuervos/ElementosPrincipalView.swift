@@ -7,6 +7,23 @@
 
 import SwiftUI
 
+struct Recibo: Decodable, Identifiable {
+    var id: Int { folioRecibo }
+    let apellidoMaterno: String
+    let apellidoPaterno: String
+    let detalles: String
+    let calle: String
+    let folioRecibo: Int
+    let monto: Int
+    let municipio: String
+    let nombre: String
+    let numero: Int
+    let referencias: String
+    let telefonoCelular: Int
+    let telefonoPrincipal: Int
+    let telefonoSecundario: Int
+}
+
 struct ExpandidosView: View {
     @Binding var push:Bool
     
@@ -15,7 +32,7 @@ struct ExpandidosView: View {
     @State var folio:String = "000"
     @State var cantidad:String = "000.00"
     @State var ref:String = "Una casa normal, de color normal"
-    @State var comentario:String = "Entregar cualquier dia, a cualquier hora"
+    @State var detalles:String = "Entregar cualquier dia, a cualquier hora"
     @State var telFijo:String = "11 1111 1111"
     @State var telExtra:String = "22 2222 2222"
     @State var telCelular:String = "33 3333 3333"
@@ -60,7 +77,7 @@ struct ExpandidosView: View {
                         .fontWeight(.regular)
                         .foregroundColor(negro)
                         .frame(height: 50.0)
-                    Text("Comentario: \(comentario)")
+                    Text("Comentario: \(detalles)")
                         .font(.headline)
                         .fontWeight(.regular)
                         .foregroundColor(negro)
@@ -96,8 +113,7 @@ struct ExpandidosView: View {
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
                     //NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
-                    Button(action: {self.push.toggle()}) {
-                        Text("Recolectar")
+                    NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
                     }
                     .frame(width: 140, height: 50.0)
                     .background(azul)
@@ -207,6 +223,11 @@ struct ElementosPrincipalView: View {
     @State var nombre:String = "Nombre Apellido"
     @State var folio:String = "000"
     @State var cantidad:String = "000.00"
+    @State var ref:String = "Una casa normal, de color normal"
+    @State var detalles:String = "Entregar cualquier dia, a cualquier hora"
+    @State var telFijo:String = "11 1111 1111"
+    @State var telExtra:String = "22 2222 2222"
+    @State var telCelular:String = "33 3333 3333"
     
     var body: some View {
         ZStack {
@@ -214,7 +235,7 @@ struct ElementosPrincipalView: View {
                 EncogidosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad)
             }
             if push {
-                ExpandidosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad)
+                ExpandidosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, ref: self.ref, detalles: self.detalles, telFijo: self.telFijo, telExtra: self.telExtra, telCelular: self.telCelular)
             }
         }
     }

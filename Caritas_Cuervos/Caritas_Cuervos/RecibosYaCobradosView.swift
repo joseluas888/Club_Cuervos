@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecibosYaCobradosView: View {
-    @State var fichas_prueba:[Ficha] = []
+    @Binding var fichas_prueba:[Ficha]
     
     var body: some View {
         VStack(alignment: .center){
@@ -28,11 +28,21 @@ struct RecibosYaCobradosView: View {
         }
         .background(blanco)
         .navigationBarBackButtonHidden(true)
+        /*.onAppear{
+            fetchRecibos(forUserID: 1) { recibos in
+                if let recibos = recibos {
+                    fichas_prueba = recibos.map { recibo in
+                        return Ficha(f_direccion: "\(recibo.calle), \(recibo.municipio) \(recibo.numero), \(recibo.referencias)", f_nombre: "\(recibo.nombre) \(recibo.apellidoPaterno) \(recibo.apellidoMaterno)", f_folio: "\(recibo.folioRecibo)", f_cantidad: "\(recibo.monto)", f_referencias: recibo.referencias, f_detalles: recibo.detalles, f_telCel: "\(recibo.telefonoCelular)", f_telPri: "\(recibo.telefonoPrincipal)", f_telSec: "\(recibo.telefonoSecundario)", f_recibido: false)
+                    }
+                }
+            }
+        }*/
     }
 }
 
 struct RecibosYaCobradosView_Previews: PreviewProvider {
     static var previews: some View {
-        RecibosYaCobradosView()
+        @State var tempVar:[Ficha] = []
+        RecibosYaCobradosView(fichas_prueba: $tempVar)
     }
 }

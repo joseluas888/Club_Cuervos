@@ -53,3 +53,32 @@ func CallAPIUsuario(_ usuario: String, _ contrasena: String, completion: @escapi
     
     task.resume()
 }
+
+func fetchRecibos(forUserID userID: Int, completion: @escaping ([Recibo]?) -> Void) {
+    if let url = URL(string: "http://10.14.255.86:8084/receipts/\(userID)") {
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Error al hacer la solicitud: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            guard let data = data else {
+                print("No se recibieron datos.")
+                completion(nil)
+                return
+            }
+            
+            do {
+                let recibos = try JSONDecoder().decode([Recibo].self, from: data)
+                completion(recibos)
+            } catch {
+                print("Error al decodificar los datos JSON: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }.resume()
+    } else {
+        print("URL de la API no válida.")
+        completion(nil)
+    }
+}

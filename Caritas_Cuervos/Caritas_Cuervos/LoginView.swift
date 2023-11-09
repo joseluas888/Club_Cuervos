@@ -18,10 +18,10 @@ struct LoginView: View {
     @State private var contrasena = ""
     @State var isNavigating = false
     @State var verificacion = false
+    @State var fichas_prueba:[Ficha] = []
     
     
     var body: some View {
-        
         VStack{
             Image("logo")
                 .resizable(resizingMode: .stretch)
