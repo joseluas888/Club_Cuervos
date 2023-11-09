@@ -11,9 +11,9 @@ struct ContentView: View {
     var body: some View {
         NavigationStack{
             VStack{
-                PaginaPrincipalView()
+                LoginView()
             }
-            .padding()
+            .padding(0)
         }
     }
 }
