@@ -18,7 +18,7 @@ struct RecibosYaCobradosView: View {
             HeaderPrincipalView(texto: "Recibos ya cobrados")
             List(){
                 ForEach(fichas_prueba) { ficha in
-                    ElementosYaCobradosView(direccion: ficha.f_direccion, nombre: ficha.f_nombre, folio: ficha.f_folio, cantidad: ficha.f_cantidad, recibido: ficha.f_recibido)
+                    ElementosYaCobradosView(direccion: ficha.f_direccion, nombre: ficha.f_nombre, folio: ficha.id, cantidad: ficha.f_cantidad, comentario: ficha.f_comentario, telFijo: ficha.f_telPri, telExtra: ficha.f_telSec, telCelular: ficha.f_telCel, recibido: ficha.f_recibido)
                 }
                 .listRowBackground(blanco)
             }
@@ -28,15 +28,6 @@ struct RecibosYaCobradosView: View {
         }
         .background(blanco)
         .navigationBarBackButtonHidden(true)
-        /*.onAppear{
-            fetchRecibos(forUserID: 1) { recibos in
-                if let recibos = recibos {
-                    fichas_prueba = recibos.map { recibo in
-                        return Ficha(f_direccion: "\(recibo.calle), \(recibo.municipio) \(recibo.numero), \(recibo.referencias)", f_nombre: "\(recibo.nombre) \(recibo.apellidoPaterno) \(recibo.apellidoMaterno)", f_folio: "\(recibo.folioRecibo)", f_cantidad: "\(recibo.monto)", f_referencias: recibo.referencias, f_detalles: recibo.detalles, f_telCel: "\(recibo.telefonoCelular)", f_telPri: "\(recibo.telefonoPrincipal)", f_telSec: "\(recibo.telefonoSecundario)", f_recibido: false)
-                    }
-                }
-            }
-        }*/
     }
 }
 

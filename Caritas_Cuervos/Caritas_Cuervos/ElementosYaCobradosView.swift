@@ -12,10 +12,11 @@ struct ExpandidosCobradosView: View {
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
-    @State var folio:String = "000"
+    @State var folio:Int = 0
     @State var cantidad:String = "000.00"
-    @State var ref:String = "Una casa normal, de color normal"
-    @State var comentario:String = "Entregar cualquier dia, a cualquier hora"
+    //@State var ref:String = "Una casa normal, de color normal"
+    //@State var detalles:String = "Entregar cualquier dia, a cualquier hora"
+    @State var comentario:String = "Ninguno"
     @State var telFijo:String = "11 1111 1111"
     @State var telExtra:String = "22 2222 2222"
     @State var telCelular:String = "33 3333 3333"
@@ -43,7 +44,7 @@ struct ExpandidosCobradosView: View {
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
-                        Text("Folio: \(folio)")
+                        Text(verbatim: "Folio: \(folio)")
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
@@ -56,12 +57,13 @@ struct ExpandidosCobradosView: View {
                 }
                 
                 VStack(alignment: .leading){
-                    Text("Referencia: \(ref)")
+                    Text("Comentario del recolector:")
                         .font(.headline)
-                        .fontWeight(.regular)
+                        .fontWeight(.semibold)
                         .foregroundColor(negro)
-                        .frame(height: 50.0)
-                    Text("Comentario: \(comentario)")
+                        .padding(.top, 30.0)
+                        .frame(height: 20.0)
+                    Text("\(comentario)")
                         .font(.headline)
                         .fontWeight(.regular)
                         .foregroundColor(negro)
@@ -115,7 +117,7 @@ struct ExpandidosCobradosView: View {
                             .fontWeight(.bold)
                     }
                 }
-                .padding(.top, 5.0)
+                .padding(.top, 40.0)
             }
             .padding(.all, 20.0)
             .frame(width: 350.0, height: 450.0)
@@ -131,7 +133,7 @@ struct EncogidosCobradosView: View {
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
-    @State var folio:String = "000"
+    @State var folio:Int = 0
     @State var cantidad:String = "000.00"
     @State var recibido:Bool = false
     
@@ -157,7 +159,7 @@ struct EncogidosCobradosView: View {
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
-                        Text("Folio: \(folio)")
+                        Text(verbatim: "Folio: \(folio)")
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
@@ -216,10 +218,11 @@ struct ElementosYaCobradosView: View {
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
-    @State var folio:String = "000"
+    @State var folio:Int = 0
     @State var cantidad:String = "000.00"
-    @State var ref:String = "Una casa normal, de color normal"
-    @State var comentario:String = "Entregar cualquier dia, a cualquier hora"
+    //@State var ref:String = "Una casa normal, de color normal"
+    //@State var detalles:String = "Entregar cualquier dia, a cualquier hora"
+    @State var comentario:String = "Ninguno"
     @State var telFijo:String = "11 1111 1111"
     @State var telExtra:String = "22 2222 2222"
     @State var telCelular:String = "33 3333 3333"
@@ -231,7 +234,7 @@ struct ElementosYaCobradosView: View {
                 EncogidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, recibido: self.recibido)
             }
             if push {
-                ExpandidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, ref: self.ref, telFijo: self.telFijo, telExtra: self.telExtra, telCelular: self.telCelular, recibido: self.recibido)
+                ExpandidosCobradosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, comentario: self.comentario, telFijo: self.telFijo, telExtra: self.telExtra, telCelular: self.telCelular, recibido: self.recibido)
             }
         }
     }
