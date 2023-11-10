@@ -18,7 +18,8 @@ struct Ficha: Identifiable, Hashable{
     let f_telCel: String
     let f_telPri: String
     let f_telSec: String
-    let f_recibido: Bool
+    var f_recibido: Bool
+    var f_comentario: String
 }
 
 var azul:Color = Color(red:0, green:0.5647058823529412, blue:0.6313725490196078)
@@ -28,18 +29,18 @@ var naranja:Color = Color(red:1, green:0.4627450980392157, blue:0.17254901960784
 var verde:Color = Color(red:0.792156862745098, green:0.8666666666666667, blue:0.8274509803921568)
 
 struct PaginaPrincipalView: View {
-    @State var fichas_prueba:[Ficha] = []
+    @State var fichas_porCobrar:[Ficha] = UserDefaults.standard.array(forKey: "OrdenDeFichas") as? [Ficha] ?? []
+    @State var fichas_cobradas:[Ficha] = []
     
     var body: some View {
         VStack{
             TabView{
-                RecibosPorCobrar(fichas_prueba: $fichas_prueba)
-                    .badge(fichas_prueba.count)
+                RecibosPorCobrar(fichas_prueba: $fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas)
+                    .badge(fichas_porCobrar.count)
                     .tabItem {Label("Por cobrar", systemImage: "dollarsign.circle.fill")}
-                RecibosYaCobradosView(fichas_prueba: $fichas_prueba)
+                RecibosYaCobradosView(fichas_prueba: $fichas_cobradas)
                     .tabItem {Label("Cobrados", systemImage: "text.badge.checkmark")}
             }
-            
         }
         .navigationBarBackButtonHidden(true)
     }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RecibosPorCobrar: View {
     @Binding var fichas_prueba:[Ficha]
+    @Binding var fichas_cobradas:[Ficha]
     
     var body: some View {
         VStack(alignment: .center){
@@ -18,7 +19,7 @@ struct RecibosPorCobrar: View {
             HeaderPrincipalView()
             List(){
                 ForEach(fichas_prueba) { ficha in
-                    ElementosPrincipalView(direccion: ficha.f_direccion, nombre: ficha.f_nombre, folio: ficha.f_folio, cantidad: ficha.f_cantidad, ref: ficha.f_referencias, detalles: ficha.f_detalles, telFijo: ficha.f_telPri, telExtra: ficha.f_telSec, telCelular: ficha.f_telCel)
+                    ElementosPrincipalView(fichas_porCobrar: self.$fichas_prueba, fichas_cobradas: self.$fichas_cobradas, direccion: ficha.f_direccion, nombre: ficha.f_nombre, folio: ficha.id, cantidad: ficha.f_cantidad, ref: ficha.f_referencias, detalles: ficha.f_detalles, telFijo: ficha.f_telPri, telExtra: ficha.f_telSec, telCelular: ficha.f_telCel)
                 }
                 .onMove(perform: move)
                 .listRowBackground(blanco)
@@ -34,10 +35,11 @@ struct RecibosPorCobrar: View {
                 fetchRecibos(forUserID: 1) { recibos in
                     if let recibos = recibos {
                         fichas_prueba = recibos.map { recibo in
-                            return Ficha(id: recibo.folioRecibo, f_direccion: "\(recibo.calle), \(recibo.municipio) \(recibo.numero), \(recibo.referencias)",f_nombre: "\(recibo.nombre) \(recibo.apellidoPaterno) \(recibo.apellidoMaterno)", f_folio: "\(recibo.folioRecibo)", f_cantidad: "\(recibo.monto)", f_referencias: recibo.referencias, f_detalles: recibo.detalles, f_telCel: "\(recibo.telefonoCelular)", f_telPri: "\(recibo.telefonoPrincipal)", f_telSec: "\(recibo.telefonoSecundario)", f_recibido: false)
+                            return Ficha(id: recibo.folioRecibo, f_direccion: "\(recibo.calle), \(recibo.municipio) \(recibo.numero), \(recibo.referencias)",f_nombre: "\(recibo.nombre) \(recibo.apellidoPaterno) \(recibo.apellidoMaterno)", f_folio: "\(recibo.folioRecibo)", f_cantidad: "\(recibo.monto)", f_referencias: recibo.referencias, f_detalles: recibo.detalles, f_telCel: "\(recibo.telefonoCelular)", f_telPri: "\(recibo.telefonoPrincipal)", f_telSec: "\(recibo.telefonoSecundario)", f_recibido: false, f_comentario: "Ninguno")
                         }
                     }
                 }
+                UserDefaults.standard.set(fichas_prueba, forKey: "OrdenDeFichas")
             }
         }
     }
@@ -50,6 +52,7 @@ struct RecibosPorCobrar: View {
 struct RecibosPorCobrar_Previews: PreviewProvider {
     static var previews: some View {
         @State var tempVar:[Ficha] = []
-        RecibosPorCobrar(fichas_prueba: $tempVar)
+        @State var tempVar2:[Ficha] = []
+        RecibosPorCobrar(fichas_prueba: $tempVar, fichas_cobradas: $tempVar2)
     }
 }
