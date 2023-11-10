@@ -1,7 +1,7 @@
 ---------------------------------- Funciones y Stored Procedures de Usuarios ----------------------------------
 -- Crear usuario
 INSERT INTO Usuarios (nombreUsuario, password, salt, permisoUsuario, nombre, apellidoPaterno, apellidoMaterno, zona)
-    VALUES ('alex', '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710', 'z9876', 1, 'Alejandro', 'Fuentes', 'Martínez', 'Monterrey'); -- Cambiar valores aqui
+    VALUES ('alex', '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710', 'z9876', 2, 'Alejandro', 'Fuentes', 'Martínez', 'Monterrey'); -- Cambiar valores aqui
 
 -- Obtener usuarios
 SELECT nombreUsuario, nombre, apellidoPaterno, apellidoMaterno, zona FROM usuarios;
@@ -10,7 +10,7 @@ SELECT nombreUsuario, nombre, apellidoPaterno, apellidoMaterno, zona FROM usuari
 SELECT salt FROM usuarios WHERE nombreUsuario = 'alex'; -- Cambiar valores aqui
 
 -- Verificar credenciales
-SELECT idUsuario FROM usuarios WHERE nombreUsuario = 'alex' AND password = '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710'; -- Cambiar valores aqui
+SELECT idUsuario FROM usuarios WHERE nombreUsuario = 'admin' AND password = '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710' AND permisoUsuario = 2; -- Cambiar valores aqui
 
 -- Obtener permiso del usuario
 SELECT permisoUsuario FROM usuarios WHERE idUsuario = 1; -- Cambiar valores aqui
@@ -36,6 +36,7 @@ CREATE PROCEDURE CrearDonante
     @apellidoPaterno VARCHAR(15),
     @apellidoMaterno VARCHAR(15),
     @fechaNacimiento DATE,
+	@detalles VARCHAR(100),
     @estado VARCHAR(20),
     @municipio VARCHAR(20),
     @calle VARCHAR(20),
@@ -47,8 +48,8 @@ CREATE PROCEDURE CrearDonante
     @telefonoCelular INT
 AS
 BEGIN
-    INSERT INTO Donantes (folioDonante, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento)
-    VALUES (@folioDonante, @nombre, @apellidoPaterno, @apellidoMaterno, @fechaNacimiento);
+    INSERT INTO Donantes (folioDonante, nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, detalles)
+    VALUES (@folioDonante, @nombre, @apellidoPaterno, @apellidoMaterno, @fechaNacimiento, @detalles);
 
     INSERT INTO Direcciones (folioDonante, estado, municipio, calle, numero, referencias)
     VALUES (@folioDonante, @estado, @municipio, @calle, @numero, @referencias);
@@ -127,6 +128,15 @@ SELECT @idUsuario = idUsuario FROM Usuarios WHERE nombreUsuario = 'nuevoNombreUs
 INSERT INTO Recibos (folioRecibo, idDonativo, idUsuario, estatus)
 	VALUES (1234, 1, @idUsuario, 1); -- Cambiar valores aqui (con excepcion del 1 de estatus)
 
+-- Obtener recibos de un usuario
+SELECT folioRecibo, monto, nombre, apellidoPaterno, apellidoMaterno, detalles, municipio, calle, numero, referencias, telefonoPrincipal, telefonoSecundario, telefonoCelular
+	FROM Recibos
+	INNER JOIN Donativos ON Recibos.idDonativo = Donativos.idDonativo
+	INNER JOIN Donantes ON Donativos.folioDonante = Donantes.folioDonante
+	INNER JOIN Direcciones ON Donantes.folioDonante = Direcciones.folioDonante
+	INNER JOIN Contactos ON Donantes.folioDonante = Contactos.folioDonante
+	WHERE idUsuario = 1 AND estatus = 1; -- Cambiar valores aqui (no cambiar el estatus)
+
 -- Obtener recibos no cobrados de un usuario (cobrado 0, estatus 1)
 SELECT folioRecibo, monto, nombre, apellidoPaterno, apellidoMaterno, municipio, calle, numero
 	FROM Recibos
@@ -156,7 +166,8 @@ WHERE folioRecibo = 1234; -- Cambiar valores aqui
 -- Marcar recibo como cobrado
 UPDATE Donativos
 SET
-	cobrado = 1
+	cobrado = 1,
+	fechaCobro = CAST(GETDATE() AS DATE)
 FROM Donativos INNER JOIN Recibos ON Donativos.idDonativo = Recibos.idDonativo
 WHERE folioRecibo = 1234; -- Cambiar valores aqui
 
@@ -198,3 +209,12 @@ Set
 	estatus = 1
 FROM Recibos
 WHERE folioRecibo = 1234; -- Cambiar valores aqui
+
+-- Obtener todos los recibos para la pantalla de administrador "Resúmen del día"
+SELECT folioRecibo, monto, fechaCobro, comentarios, nombre, apellidoPaterno, apellidoMaterno, municipio, calle, numero
+	FROM Recibos
+	INNER JOIN Donativos ON Recibos.idDonativo = Donativos.idDonativo
+	INNER JOIN Donantes ON Donativos.folioDonante = Donantes.folioDonante
+	INNER JOIN Direcciones ON Donantes.folioDonante = Direcciones.folioDonante
+	INNER JOIN Contactos ON Donantes.folioDonante = Contactos.folioDonante
+	WHERE fechaConfirmacion = CAST(GETDATE() AS DATE); -- No es necesario cambiar este campo

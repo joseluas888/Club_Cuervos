@@ -9,6 +9,8 @@ INSERT INTO Usuarios (nombreUsuario, password, salt, permisoUsuario, nombre, ape
     VALUES ('nallely', '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710', 'z9876', 1, 'primerNombre', 'apellidoMaterno', 'apellidoMaterno', 'Monterrey'); -- password: a1234
 INSERT INTO Usuarios (nombreUsuario, password, salt, permisoUsuario, nombre, apellidoPaterno, apellidoMaterno, zona)
     VALUES ('alejandro', '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710', 'z9876', 1, 'primerNombre', 'apellidoMaterno', 'apellidoMaterno', 'Monterrey'); -- password: a1234
+INSERT INTO Usuarios (nombreUsuario, password, salt, permisoUsuario, nombre, apellidoPaterno, apellidoMaterno, zona)
+    VALUES ('admin', '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710', 'z9876', 2, 'primerNombre', 'apellidoMaterno', 'apellidoMaterno', 'Monterrey'); -- password: a1234
 
 
 EXEC CrearDonante
@@ -17,6 +19,7 @@ EXEC CrearDonante
     @apellidoPaterno = 'Fuentes',
     @apellidoMaterno = 'Martinez',
     @fechaNacimiento = '2003-09-26',
+	@detalles = 'Cobrar a la 1 de la tarde',
     @estado = 'Nuevo León',
     @municipio = 'San Pedro',
     @calle = 'Garza Sada',
@@ -32,6 +35,7 @@ EXEC CrearDonante
     @apellidoPaterno = 'Plascencia',
     @apellidoMaterno = 'Cruz',
     @fechaNacimiento = '1999-01-01',
+	@detalles = 'Cobrar a la 1 de la tarde',
     @estado = 'Nuevo León',
     @municipio = 'San Pedro',
     @calle = 'Garza Sada',
@@ -47,6 +51,7 @@ EXEC CrearDonante
     @apellidoPaterno = 'Serna',
     @apellidoMaterno = 'Rivera',
     @fechaNacimiento = '1999-01-01',
+	@detalles = 'Cobrar a la 1 de la tarde',
     @estado = 'Nuevo León',
     @municipio = 'San Pedro',
     @calle = 'Garza Sada',
@@ -62,6 +67,7 @@ EXEC CrearDonante
     @apellidoPaterno = 'García',
     @apellidoMaterno = 'Rangel',
     @fechaNacimiento = '1999-01-01',
+	@detalles = 'Cobrar a la 1 de la tarde',
     @estado = 'Nuevo León',
     @municipio = 'San Pedro',
     @calle = 'Garza Sada',
@@ -77,6 +83,7 @@ EXEC CrearDonante
     @apellidoPaterno = 'Salazar',
     @apellidoMaterno = 'Anza',
     @fechaNacimiento = '1999-01-01',
+	@detalles = 'Cobrar a la 1 de la tarde',
     @estado = 'Nuevo León',
     @municipio = 'San Pedro',
     @calle = 'Garza Sada',
@@ -86,7 +93,6 @@ EXEC CrearDonante
     @telefonoPrincipal = 12345678,
     @telefonoSecundario = 12345678,
     @telefonoCelular = 12345678;
-
 
 INSERT INTO Donativos (folioDonante, monto, cobrado, fechaConfirmacion, fechaReprogramacion, fechaCobro)
     VALUES (1234, 1000, 0, '2023-10-19', '2023-10-20', '2023-10-21');
@@ -118,6 +124,12 @@ INSERT INTO Donativos (folioDonante, monto, cobrado, fechaConfirmacion, fechaRep
     VALUES (1237, 13000, 0, '2023-10-19', '2023-10-20', '2023-10-21');
 INSERT INTO Donativos (folioDonante, monto, cobrado, fechaConfirmacion, fechaReprogramacion, fechaCobro)
     VALUES (1238, 14000, 0, '2023-10-19', '2023-10-20', '2023-10-21');
+INSERT INTO Donativos (folioDonante, monto, cobrado, fechaConfirmacion, fechaReprogramacion, fechaCobro)
+    VALUES (1234, 110, 0, '2023-10-19', '2023-10-20', '2023-10-21');
+INSERT INTO Donativos (folioDonante, monto, cobrado, fechaConfirmacion, fechaReprogramacion, fechaCobro)
+    VALUES (1234, 1200, 0, '2023-10-19', '2023-10-20', '2023-10-21');
+INSERT INTO Donativos (folioDonante, monto, cobrado, fechaConfirmacion, fechaReprogramacion, fechaCobro)
+    VALUES (1234, 1400, 0, '2023-10-19', '2023-10-20', '2023-10-21');
 
 
 DECLARE @idUsuario INT;
@@ -166,3 +178,12 @@ INSERT INTO Recibos (folioRecibo, idDonativo, idUsuario, estatus)
 SELECT @idUsuario = idUsuario FROM Usuarios WHERE nombreUsuario = 'alejandro';
 INSERT INTO Recibos (folioRecibo, idDonativo, idUsuario, estatus)
 	VALUES (12382, 15, @idUsuario, 1);
+SELECT @idUsuario = idUsuario FROM Usuarios WHERE nombreUsuario = 'alex';
+INSERT INTO Recibos (folioRecibo, idDonativo, idUsuario, estatus)
+	VALUES (1231, 19, @idUsuario, 1);
+SELECT @idUsuario = idUsuario FROM Usuarios WHERE nombreUsuario = 'alex';
+INSERT INTO Recibos (folioRecibo, idDonativo, idUsuario, estatus)
+	VALUES (1232, 20, @idUsuario, 1);
+SELECT @idUsuario = idUsuario FROM Usuarios WHERE nombreUsuario = 'alex';
+INSERT INTO Recibos (folioRecibo, idDonativo, idUsuario, estatus)
+	VALUES (1233, 21, @idUsuario, 1);

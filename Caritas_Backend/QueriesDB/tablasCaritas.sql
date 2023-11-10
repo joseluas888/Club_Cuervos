@@ -17,7 +17,8 @@ CREATE TABLE Donantes (
     nombre VARCHAR(15),
     apellidoPaterno VARCHAR(15),
     apellidoMaterno VARCHAR(15),
-    fechaNacimiento DATE
+    fechaNacimiento DATE,
+	detalles VARCHAR(100)
 );
 
 -- Tabla Donativos
