@@ -9,34 +9,69 @@
 import SwiftUI
 
 struct PaginaPrincipalView: View {
+    @State private var selection = 0
     var body: some View {
-        VStack{
-            TabView{
-                Text("")
-                    .tabItem {Label("Todos", systemImage: "chart.bar.fill")}
-                Text("")
-                    .tabItem {Label("Cobrados", systemImage: "dollarsign.circle.fill")}
-                Text("")
-                    .tabItem {Label("Comentarios", systemImage: "text.bubble")}
-                Text("")
-                    .tabItem {Label("No Cobrados", systemImage: "exclamationmark.triangle")}
-                
-            }
-            Spacer()
-
+        TabView {
+            //
             VStack{
-                Text ("Resumen del día")
-                    .padding()
-                // Aquí es donde iría el contenido principal de tu página.
-            }.frame(height: 730)
+                VStack{
+                    VStack{
+                        TabView(selection: $selection){
+                                    Text("")
+                                        .onTapGesture {
+                                            print("Todos")
+                                        }
+                                        .tabItem {
+                                            Label("Todos", systemImage: "list.bullet")
+                                        }
+                                        .tag(0)
+
+                                    Text("")
+                                        .onTapGesture {
+                                            print("Comentarios")
+                                        }
+                                        .tabItem {
+                                            Label("Comentarios", systemImage: "text.bubble")
+                                        }
+                                        .tag(1)
+
+                                    Text("")
+                                        .onTapGesture {
+                                            print("No Cobrados")
+                                        }
+                                        .tabItem {
+                                            Label("No Cobrados", systemImage: "dollarsign.circle")
+                                        }
+                                        .tag(2)
+
+                                    Text("")
+                                        .onTapGesture {
+                                            print("Cobrados")
+                                        }
+                                        .tabItem {
+                                            Label("Cobrados", systemImage: "checkmark.seal")
+                                        }
+                                        .tag(3)
+                                }
+                        Divider()
+                    }.offset(y: -680)
+                    
+                        
+                }
+                VStack{
+                    Text("Pagina Principalll")
+                    Text("Contenido")
+                }.offset(y:-300)
+            }
+            //
+                .tabItem {
+                    Label("Principal", systemImage: "house")
+                }
             
-            TabView{
-                Text("")
-                    .tabItem {Label("Todos", systemImage: "chart.bar.fill")}
-                Text("")
-                    .tabItem {Label("Cobrados", systemImage: "dollarsign.circle.fill")}
-            }.padding(.horizontal, 80.0)
-            
+            RecibosDelDiaView()
+                .tabItem {
+                    Label("Recibos Del Dia", systemImage: "doc.text")
+                }
         }
     }
 }

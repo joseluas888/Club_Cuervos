@@ -16,6 +16,7 @@
 		FB9CC1CD2AF894DB00259439 /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9CC1CC2AF894DB00259439 /* ModelData.swift */; };
 		FBBCEB802AFEA8F90056A94E /* RecibosYaCobradosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBCEB7F2AFEA8F90056A94E /* RecibosYaCobradosView.swift */; };
 		FBBCEB822AFEAAD00056A94E /* RecibosComentadosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBCEB812AFEAAD00056A94E /* RecibosComentadosView.swift */; };
+		FBBCEB842AFEBD3A0056A94E /* RecibosDelDiaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBBCEB832AFEBD3A0056A94E /* RecibosDelDiaView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		FB9CC1CC2AF894DB00259439 /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
 		FBBCEB7F2AFEA8F90056A94E /* RecibosYaCobradosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecibosYaCobradosView.swift; sourceTree = "<group>"; };
 		FBBCEB812AFEAAD00056A94E /* RecibosComentadosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecibosComentadosView.swift; sourceTree = "<group>"; };
+		FBBCEB832AFEBD3A0056A94E /* RecibosDelDiaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecibosDelDiaView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				FB9CC1C82AF8931800259439 /* LoginView.swift */,
 				FB9CC1CC2AF894DB00259439 /* ModelData.swift */,
 				FB9CC1CA2AF8946D00259439 /* PaginaPrincipalView.swift */,
+				FBBCEB832AFEBD3A0056A94E /* RecibosDelDiaView.swift */,
 				FBBCEB812AFEAAD00056A94E /* RecibosComentadosView.swift */,
 				FBBCEB7F2AFEA8F90056A94E /* RecibosYaCobradosView.swift */,
 				FB9CC1BE2AF892A600259439 /* Assets.xcassets */,
@@ -159,6 +162,7 @@
 				FBBCEB802AFEA8F90056A94E /* RecibosYaCobradosView.swift in Sources */,
 				FB9CC1BD2AF8929A00259439 /* ContentView.swift in Sources */,
 				FB9CC1BB2AF8929A00259439 /* ManagerCaritasApp.swift in Sources */,
+				FBBCEB842AFEBD3A0056A94E /* RecibosDelDiaView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
