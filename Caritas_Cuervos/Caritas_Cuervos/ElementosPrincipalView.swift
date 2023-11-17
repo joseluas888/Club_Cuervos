@@ -25,17 +25,22 @@ struct Recibo: Decodable, Identifiable {
 }
 
 struct ExpandidosView: View {
+    @ObservedObject var modalState:ModalState
+    
     @Binding var push:Bool
+    @Binding var fichas_porCobrar:[Ficha]
+    @Binding var fichas_cobradas:[Ficha]
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
-    @State var folio:String = "000"
+    @State var folio:Int = 0
     @State var cantidad:String = "000.00"
     @State var ref:String = "Una casa normal, de color normal"
     @State var detalles:String = "Entregar cualquier dia, a cualquier hora"
     @State var telFijo:String = "11 1111 1111"
     @State var telExtra:String = "22 2222 2222"
     @State var telCelular:String = "33 3333 3333"
+    //@Binding var comentario:String
     
     var body: some View {
         ZStack{
@@ -59,7 +64,7 @@ struct ExpandidosView: View {
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
-                        Text("Folio: \(folio)")
+                        Text(verbatim: "Folio: \(folio)")
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
@@ -100,7 +105,6 @@ struct ExpandidosView: View {
                 }
                 
                 HStack{
-                    //NavigationLink(destination: DetallesDonanteView()){
                     Button(action: {self.push.toggle()}) {
                         Text("Ocultar")
                     }
@@ -112,16 +116,30 @@ struct ExpandidosView: View {
                     .fontWeight(.bold)
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
-                    //NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
-                    NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
+                    ZStack{
+                        /*Text("Recolectar")
+                            .frame(width: 140, height: 50.0)
+                            .background(azul)
+                            .foregroundColor(blanco)
+                            .cornerRadius(10)
+                            .font(.footnote)
+                            .fontWeight(.bold)
+                            .buttonStyle(PlainButtonStyle())
+                        NavigationLink(destination: ReciboView(modalState: self.modalState, fichas_porCobrar: self.$fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas, nombre: nombre, folio: folio, cantidad: cantidad)){}*/
+                        Button("Recolectar"){
+                            self.modalState.isModal1Present = true
+                        }
+                        .frame(width: 140, height: 50.0)
+                        .background(azul)
+                        .foregroundColor(blanco)
+                        .cornerRadius(10)
+                        .font(.footnote)
+                        .fontWeight(.bold)
+                        .buttonStyle(PlainButtonStyle())
+                        .sheet(isPresented: $modalState.isModal1Present){
+                            ReciboView(modalState: self.modalState, fichas_porCobrar: self.$fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas, nombre: nombre, folio: folio, cantidad: cantidad)
+                        }
                     }
-                    .frame(width: 140, height: 50.0)
-                    .background(azul)
-                    .foregroundColor(blanco)
-                    .cornerRadius(10)
-                    .font(.footnote)
-                    .fontWeight(.bold)
-                    .buttonStyle(PlainButtonStyle())
                 }
                 .padding(.top, 5.0)
             }
@@ -135,12 +153,17 @@ struct ExpandidosView: View {
 }
 
 struct EncogidosView: View {
+    @ObservedObject var modalState:ModalState
+    
     @Binding var push:Bool
+    @Binding var fichas_porCobrar:[Ficha]
+    @Binding var fichas_cobradas:[Ficha]
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
-    @State var folio:String = "000"
+    @State var folio:Int = 0
     @State var cantidad:String = "000.00"
+    //@Binding var comentario:String
     
     var body: some View {
         ZStack{
@@ -164,7 +187,7 @@ struct EncogidosView: View {
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
-                        Text("Folio: \(folio)")
+                        Text(verbatim: "Folio: \(folio)")
                             .font(.headline)
                             .fontWeight(.regular)
                             .foregroundColor(negro)
@@ -176,7 +199,6 @@ struct EncogidosView: View {
                         .foregroundColor(naranja)
                 }
                 HStack{
-                    //NavigationLink(destination: DetallesDonanteView()){
                     Button(action: {self.push.toggle()}) {
                         Text("Ver información")
                     }
@@ -189,20 +211,28 @@ struct EncogidosView: View {
                     .buttonStyle(PlainButtonStyle())
                     Spacer()
                     ZStack{
-                        Text("Recolectar")
+                        /*Text("Recolectar")
                             .frame(width: 140, height: 50.0)
                             .background(azul)
                             .foregroundColor(blanco)
                             .cornerRadius(10)
                             .font(.footnote)
                             .fontWeight(.bold)
-                            .buttonStyle(PlainButtonStyle())
-                        NavigationLink(destination: ReciboView(nombre2: nombre, folio2: folio, cantidad2: cantidad)){
+                            .buttonStyle(PlainButtonStyle())*/
+                        //NavigationLink(destination: ReciboView(fichas_porCobrar: self.$fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas, nombre: nombre, folio: folio, cantidad: cantidad)){}
+                        Button("Recolectar"){
+                            self.modalState.isModal1Present = true
                         }
                         .frame(width: 140, height: 50.0)
+                        .background(azul)
+                        .foregroundColor(blanco)
                         .cornerRadius(10)
-                        .opacity(0)
+                        .font(.footnote)
+                        .fontWeight(.bold)
                         .buttonStyle(PlainButtonStyle())
+                        .sheet(isPresented: $modalState.isModal1Present){
+                            ReciboView(modalState: self.modalState, fichas_porCobrar: self.$fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas, nombre: nombre, folio: folio, cantidad: cantidad)
+                        }
                     }
                 }
                 .padding(.top, 5.0)
@@ -217,25 +247,30 @@ struct EncogidosView: View {
 }
 
 struct ElementosPrincipalView: View {
+    @ObservedObject var modalState:ModalState
+    
     @State private var push = false
+    @Binding var fichas_porCobrar:[Ficha]
+    @Binding var fichas_cobradas:[Ficha]
     
     @State var direccion:String = "Calle #Casa, Colonia #CP"
     @State var nombre:String = "Nombre Apellido"
-    @State var folio:String = "000"
+    @State var folio:Int = 0
     @State var cantidad:String = "000.00"
     @State var ref:String = "Una casa normal, de color normal"
     @State var detalles:String = "Entregar cualquier dia, a cualquier hora"
     @State var telFijo:String = "11 1111 1111"
     @State var telExtra:String = "22 2222 2222"
     @State var telCelular:String = "33 3333 3333"
+    //@Binding var comentario:String
     
     var body: some View {
         ZStack {
             if !push {
-                EncogidosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad)
+                EncogidosView(modalState: self.modalState, push: $push, fichas_porCobrar: self.$fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad)
             }
             if push {
-                ExpandidosView(push: $push, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, ref: self.ref, detalles: self.detalles, telFijo: self.telFijo, telExtra: self.telExtra, telCelular: self.telCelular)
+                ExpandidosView(modalState: self.modalState, push: $push, fichas_porCobrar: self.$fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas, direccion: self.direccion, nombre: self.nombre, folio: self.folio, cantidad: self.cantidad, ref: self.ref, detalles: self.detalles, telFijo: self.telFijo, telExtra: self.telExtra, telCelular: self.telCelular)
             }
         }
     }
@@ -243,6 +278,9 @@ struct ElementosPrincipalView: View {
 
 struct ElementosPrincipalView_Previews: PreviewProvider {
     static var previews: some View {
-        ElementosPrincipalView()
+        @State var tempVar:[Ficha] = []
+        @State var tempVar2:[Ficha] = []
+        @State var tempVar3 = ModalState()
+        ElementosPrincipalView(modalState: tempVar3, fichas_porCobrar: $tempVar, fichas_cobradas: $tempVar2)
     }
 }
