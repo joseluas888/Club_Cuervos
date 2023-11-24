@@ -1,14 +1,24 @@
 import pyodbc
 
-# Define MSSQL database connection details
+import os
+# Obtener las variables de entorno
+driver = os.getenv('DRIVER')
+server = os.getenv('SERVER')
+database = os.getenv('DATABASE')
+uid = os.getenv('DBUSER')
+pwd = os.getenv('PWD')
+trust_certificate = os.getenv('TRUST_CERTIFICATE')
+
+# Ahora puedes usar estas variables para construir tu cadena de conexión
 conn_str = (
-    "DRIVER={ODBC Driver 18 for SQL Server};"
-    "SERVER=100.80.80.7;" # Change to Team IP address assigned
-    "DATABASE=usuarios;" # Change to right DB 
-    "UID=SA;"
-    "PWD=Shakira123.;"
-    "TrustServerCertificate=yes"  # Disable certificate validation
+    f"DRIVER={{{driver}}};"
+    f"SERVER={server};"
+    f"DATABASE={database};"
+    f"UID={uid};"
+    f"PWD={pwd};"
+    f"TrustServerCertificate={trust_certificate}"
 )
+
 
 # Function to establish a database connection
 def get_db_connection():
@@ -17,22 +27,6 @@ def get_db_connection():
         return conn
     except Exception as e:
         return None
-
-# Create a user in the database
-def create_user(userid, username, email,passwd):
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute(" INSERT INTO users (UserID, username, email, PasswordHash) VALUES (?, ?, ?, HASHBYTES('SHA2_256',?))", (userid, username, email, passwd))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
-        return True
-    except Exception as e:
-        return False
 
 # Retrieve all users from the database
 def get_users():
@@ -50,49 +44,14 @@ def get_users():
     except Exception as e:
         return []
 
-# Update a user in the database
-def update_user(userID, username, email, passwd):
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
 
-        cursor.execute("UPDATE users SET username = ?, email = ?, PasswordHash = HASHBYTES('SHA2_256',?) WHERE UserID = ?", (username, email, passwd, userID))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
-        return True
-    except Exception as e:
-        return False
-    
-
-
-# Delete a user from the database
-def delete_user(userID):
-    try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        cursor.execute("DELETE FROM users WHERE UserID = ?", (userID,))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
-        return True
-    except Exception as e:
-        return False
-
-###
-
-# Retrieve salt from the database
+# Function to obtain the salt of a user (HU1)
 def get_salt(nombreUsuario):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute("SELECT salt from Usuarios WHERE nombreUsuario = ?", (nombreUsuario))
+        cursor.execute("SELECT * FROM ObtenerSalt(?)", (nombreUsuario,))
         salt = cursor.fetchone()[0]
 
         cursor.close()
@@ -100,54 +59,34 @@ def get_salt(nombreUsuario):
 
         return salt
     except Exception as e:
+        print(e)
         return []
     
-# Verify Credentials
+# Function to verify user credentials (HU1)
 def verify_user(nombreUsuario, hashed_password):
     try:
-        # Create a new connection to the database
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Write the query
-        query = "SELECT * FROM Usuarios WHERE nombreUsuario = ? AND password = ? AND permisoUsuario = 1"
+        cursor.execute("SELECT * FROM VerificarCredencialesUsuario(?, ?)", (nombreUsuario, hashed_password))
+        user_id = cursor.fetchone()[0]
 
-        # Execute the query with the provided matricula and hashed_password
-        cursor.execute(query, (nombreUsuario, hashed_password))
-
-        # Fetch one row
-        row = cursor.fetchone()
-
-        # Close the cursor and connection
         cursor.close()
         conn.close()
 
-        # If a row is returned, then the matricula and password are correct
-        if row:
-            return row[0]
-        else:
-            return False
+        return user_id
     except Exception as e:
         print(e)
         return False
 
+# Function to get user receipts (HU2 and HU9)
 def get_receipts(user_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        query = """
-        SELECT folioRecibo, monto, nombre, apellidoPaterno, apellidoMaterno, detalles, municipio, calle, numero, referencias, telefonoPrincipal, telefonoSecundario, telefonoCelular
-        FROM Recibos
-        INNER JOIN Donativos ON Recibos.idDonativo = Donativos.idDonativo
-        INNER JOIN Donantes ON Donativos.folioDonante = Donantes.folioDonante
-        INNER JOIN Direcciones ON Donantes.folioDonante = Direcciones.folioDonante
-        INNER JOIN Contactos ON Donantes.folioDonante = Contactos.folioDonante
-        WHERE idUsuario = ? AND estatus = 1;
-        """
-        cursor.execute(query, (user_id,))
-
-        receipts = [{'folioRecibo': row[0], 'monto': row[1], 'nombre': row[2], 'apellidoPaterno': row[3], 'apellidoMaterno': row[4], 'detalles': row[5], 'municipio': row[6], 'calle': row[7], 'numero': row[8], 'referencias': row[9], 'telefonoPrincipal': row[10], 'telefonoSecundario': row[11], 'telefonoCelular': row[12]} for row in cursor.fetchall()]
+        cursor.execute("SELECT * FROM ObtenerRecibosUsuario(?)", (user_id,))
+        receipts = [{'folioRecibo': row[0], 'monto': row[1], 'cobrado': row[2], 'comentarios': row[3], 'nombre': row[4], 'apellidoPaterno': row[5], 'apellidoMaterno': row[6], 'detalles': row[7], 'municipio': row[8], 'calle': row[9], 'numero': row[10], 'referencias': row[11], 'telefonoPrincipal': row[12], 'telefonoSecundario': row[13], 'telefonoCelular': row[14]} for row in cursor.fetchall()]
 
         cursor.close()
         conn.close()
@@ -158,18 +97,13 @@ def get_receipts(user_id):
         return []
 
 
+# Function to mark a receipt as paid (HU3)
 def mark_receipt_as_paid(receipt_id):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        query = """
-        UPDATE Donativos
-        SET cobrado = 1
-        FROM Donativos INNER JOIN Recibos ON Donativos.idDonativo = Recibos.idDonativo
-        WHERE folioRecibo = ?;
-        """
-        cursor.execute(query, (receipt_id,))
+        cursor.execute("EXEC CobrarRecibo @folioRecibo = ?", (receipt_id,))
 
         # Commit the transaction
         conn.commit()
@@ -183,17 +117,13 @@ def mark_receipt_as_paid(receipt_id):
         print(e)
         return False
 
+# Function to add comments to a receipt when not paid (HU4)
 def add_comment_to_receipt(receipt_id, comment):
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        query = """
-        UPDATE Recibos
-        SET comentarios = ?
-        WHERE folioRecibo = ?;
-        """
-        cursor.execute(query, (comment, receipt_id))
+        cursor.execute("EXEC ComentarRecibo @folioRecibo = ?, @comentarios = ?", (receipt_id, comment))
 
         # Commit the transaction
         conn.commit()
@@ -210,28 +140,84 @@ def add_comment_to_receipt(receipt_id, comment):
 # Verify Admin Credentials
 def verify_user_admin(nombreUsuario, hashed_password):
     try:
-        # Create a new connection to the database
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Write the query
-        query = "SELECT * FROM Usuarios WHERE nombreUsuario = ? AND password = ? AND permisoUsuario = 2"
+        cursor.execute("SELECT * FROM VerificarCredencialesAdministrador (?, ?)", (nombreUsuario, hashed_password))
+        user_id = cursor.fetchone()[0]
 
-        # Execute the query with the provided matricula and hashed_password
-        cursor.execute(query, (nombreUsuario, hashed_password))
-
-        # Fetch one row
-        row = cursor.fetchone()
-
-        # Close the cursor and connection
         cursor.close()
         conn.close()
 
-        # If a row is returned, then the matricula and password are correct
-        if row:
-            return row[0]
-        else:
-            return False
+        return user_id
     except Exception as e:
         print(e)
         return False
+
+# Function to get collectors (HU8)
+def get_collectors():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT idUsuario, nombre, apellidoPaterno, apellidoMaterno, zona FROM ObtenerRecolectores()")
+        collectors = [{'idUsuario': row[0], 'nombre': row[1], 'apellidoPaterno': row[2], 'apellidoMaterno': row[3], 'zona': row[4]} for row in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        return collectors
+    except Exception as e:
+        print(e)
+        return []
+    
+# Function to get paid and unpaid receipts (HU10 - C2)
+def get_paid_unpaid_receipts():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT estadoCobro, cantidad FROM ObtenerRecibosCobradosNoCobrados()")
+        results = [{'estadoCobro': row[0], 'cantidad': row[1]} for row in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        return results
+    except Exception as e:
+        print(e)
+        return []
+
+# Function to get paid receipts by zone (HU10 - C3)
+def get_paid_receipts_by_zone():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT municipio, cantidad FROM ObtenerRecibosCobradosPorZona()")
+        results = [{'municipio': row[0], 'cantidad': row[1]} for row in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        return results
+    except Exception as e:
+        print(e)
+        return []
+    
+# Function to get money collected in the last 5 days (HU10 - C4)
+def get_income_last_5_days():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("SELECT estadoCobro, sumatoriaMontos FROM ObtenerImportes()")
+        results = [{'estadoCobro': row[0], 'sumatoriaMontos': row[1]} for row in cursor.fetchall()]
+
+        cursor.close()
+        conn.close()
+
+        return results
+    except Exception as e:
+        print(e)
+        return []
