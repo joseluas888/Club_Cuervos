@@ -34,17 +34,27 @@ class ModalState: ObservableObject{
 }
 
 struct PaginaPrincipalView: View {
-    @State var fichas_porCobrar:[Ficha] = UserDefaults.standard.array(forKey: "OrdenDeFichas") as? [Ficha] ?? []
-    @State var fichas_cobradas:[Ficha] = []
-    
+    @State var fichas_porCobrar: [Ficha] = UserDefaults.standard.array(forKey: "OrdenDeFichas") as? [Ficha] ?? []
+    @State var fichas_cobradas: [Ficha] = []
+
     var body: some View {
-        VStack{
-            TabView{
+        VStack {
+            HStack {
+                Spacer()
+                Button(action: {
+                    // Lógica para regresar a LoginView, por ejemplo, mediante navegación
+                }) {
+                    Image(systemName: "rectangle.portrait.and.arrow.forward")
+                        .padding()
+                }
+            }
+
+            TabView {
                 RecibosPorCobrar(fichas_prueba: $fichas_porCobrar, fichas_cobradas: self.$fichas_cobradas)
                     .badge(fichas_porCobrar.count)
-                    .tabItem {Label("Por cobrar", systemImage: "dollarsign.circle.fill")}
+                    .tabItem { Label("Por cobrar", systemImage: "dollarsign.circle.fill") }
                 RecibosYaCobradosView(fichas_prueba: $fichas_cobradas)
-                    .tabItem {Label("Cobrados", systemImage: "text.badge.checkmark")}
+                    .tabItem { Label("Cobrados", systemImage: "text.badge.checkmark") }
             }
         }
         .navigationBarBackButtonHidden(true)
