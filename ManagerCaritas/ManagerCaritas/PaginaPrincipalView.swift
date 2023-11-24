@@ -15,23 +15,33 @@ var naranja:Color = Color(red:1, green:0.4627450980392157, blue:0.17254901960784
 var verde:Color = Color(red:0.792156862745098, green:0.8666666666666667, blue:0.8274509803921568)
 
 struct PaginaPrincipalView: View {
-    var body: some View {
-        NavigationStack{
-            VStack{
-                TabView{
-                    ListaRecolectoresView()
-                        .tabItem {Label("Recolectores", systemImage: "bicycle")}
-                    DashboardsView()
-                        .tabItem {Label("Dashboards", systemImage: "chart.bar.fill")}
-                }
-            }
-            .navigationBarBackButtonHidden(true)
-        }
-    }
-}
+    @State private var showingLoginView = false
 
-struct PaginaPrincipalView_Previews: PreviewProvider {
-    static var previews: some View {
-        PaginaPrincipalView()
+    var body: some View {
+        NavigationView {
+            NavigationStack {
+                VStack {
+                    TabView {
+                        ListaRecolectoresView()
+                            .tabItem { Label("Recolectores", systemImage: "bicycle") }
+                        DashboardsView()
+                            .tabItem { Label("Dashboards", systemImage: "chart.bar.fill") }
+                    }
+                }
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        showingLoginView.toggle()
+                    }) {
+                        Image(systemName: "rectangle.portrait.and.arrow.forward")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                    }
+                    .sheet(isPresented: $showingLoginView) {
+                        LoginView()
+                    }
+                )
+            }
+        }
     }
 }
