@@ -14,6 +14,8 @@
 		FB1AE1472B0FC437005AE26A /* RecibosNoPagadosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1AE1462B0FC437005AE26A /* RecibosNoPagadosView.swift */; };
 		FB1AE1492B0FC87E005AE26A /* PlantillaFichaPorCobrarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB1AE1482B0FC87E005AE26A /* PlantillaFichaPorCobrarView.swift */; };
 		FB2B64E62B0FEB4800EC81F4 /* PlantillaFichaCobradaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2B64E52B0FEB4800EC81F4 /* PlantillaFichaCobradaView.swift */; };
+		FB82DEC52B11188300871CFB /* HeaderGraficasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82DEC42B11188300871CFB /* HeaderGraficasView.swift */; };
+		FB82DEC92B11198C00871CFB /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82DEC82B11198C00871CFB /* PieChartView.swift */; };
 		FB9CC1BB2AF8929A00259439 /* ManagerCaritasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9CC1BA2AF8929A00259439 /* ManagerCaritasApp.swift */; };
 		FB9CC1BD2AF8929A00259439 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9CC1BC2AF8929A00259439 /* ContentView.swift */; };
 		FB9CC1BF2AF892A600259439 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB9CC1BE2AF892A600259439 /* Assets.xcassets */; };
@@ -33,6 +35,8 @@
 		FB1AE1462B0FC437005AE26A /* RecibosNoPagadosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecibosNoPagadosView.swift; sourceTree = "<group>"; };
 		FB1AE1482B0FC87E005AE26A /* PlantillaFichaPorCobrarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantillaFichaPorCobrarView.swift; sourceTree = "<group>"; };
 		FB2B64E52B0FEB4800EC81F4 /* PlantillaFichaCobradaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantillaFichaCobradaView.swift; sourceTree = "<group>"; };
+		FB82DEC42B11188300871CFB /* HeaderGraficasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderGraficasView.swift; sourceTree = "<group>"; };
+		FB82DEC82B11198C00871CFB /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
 		FB9CC1B72AF8929A00259439 /* ManagerCaritas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManagerCaritas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB9CC1BA2AF8929A00259439 /* ManagerCaritasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerCaritasApp.swift; sourceTree = "<group>"; };
 		FB9CC1BC2AF8929A00259439 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -80,6 +84,8 @@
 				FB9CC1C82AF8931800259439 /* LoginView.swift */,
 				FBDAC5B62B0695370072A345 /* PaginaPrincipalView.swift */,
 				FB1AE13E2B0FC35E005AE26A /* HeaderParaRecolectoresView.swift */,
+				FB82DEC42B11188300871CFB /* HeaderGraficasView.swift */,
+				FB82DEC82B11198C00871CFB /* PieChartView.swift */,
 				FBDAC5B82B0696070072A345 /* ListaRecolectoresView.swift */,
 				FB1AE1402B0FC3A2005AE26A /* TabRecibosView.swift */,
 				FB1AE1482B0FC87E005AE26A /* PlantillaFichaPorCobrarView.swift */,
@@ -178,12 +184,14 @@
 				FBDAC5BB2B0696380072A345 /* DashboardsView.swift in Sources */,
 				FB1AE1492B0FC87E005AE26A /* PlantillaFichaPorCobrarView.swift in Sources */,
 				FBDAC5B72B0695370072A345 /* PaginaPrincipalView.swift in Sources */,
+				FB82DEC52B11188300871CFB /* HeaderGraficasView.swift in Sources */,
 				FB1AE1432B0FC411005AE26A /* RecibosPorCobrarView.swift in Sources */,
 				FB9CC1C92AF8931800259439 /* LoginView.swift in Sources */,
 				FB9CC1CD2AF894DB00259439 /* ModelData.swift in Sources */,
 				FB1AE1472B0FC437005AE26A /* RecibosNoPagadosView.swift in Sources */,
 				FB1AE13F2B0FC35E005AE26A /* HeaderParaRecolectoresView.swift in Sources */,
 				FB1AE1412B0FC3A2005AE26A /* TabRecibosView.swift in Sources */,
+				FB82DEC92B11198C00871CFB /* PieChartView.swift in Sources */,
 				FB9CC1BD2AF8929A00259439 /* ContentView.swift in Sources */,
 				FB9CC1BB2AF8929A00259439 /* ManagerCaritasApp.swift in Sources */,
 				FB2B64E62B0FEB4800EC81F4 /* PlantillaFichaCobradaView.swift in Sources */,
