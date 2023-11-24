@@ -102,7 +102,7 @@ struct LoginView: View {
             .navigationDestination(isPresented: $isNavigating) {
                 // Navega a tu vista principal aquí
                 PaginaPrincipalView()
-            }
+            }.navigationBarHidden(true)
             
             Spacer()
         }
