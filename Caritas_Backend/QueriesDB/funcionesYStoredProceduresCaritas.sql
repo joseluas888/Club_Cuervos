@@ -93,6 +93,16 @@ END;
 
 GO
 
+-- Verificar credenciales de un administrador (HU7)
+CREATE FUNCTION VerificarCredencialesAdministrador(@nombreUsuario VARCHAR(20), @password VARCHAR(MAX))
+RETURNS TABLE
+AS
+RETURN (
+	SELECT idUsuario FROM usuarios
+	WHERE nombreUsuario = @nombreUsuario AND password = @password AND permisoUsuario = 2);
+
+GO
+
 -- Obtener recolectores (HU8)
 CREATE FUNCTION ObtenerRecolectores()
 RETURNS TABLE
@@ -109,10 +119,22 @@ CREATE FUNCTION ObtenerRecibosCobradosNoCobrados()
 RETURNS TABLE
 AS
 RETURN (
-	SELECT cobrado, COUNT(*) AS cantidad
-	FROM Donativos
-	WHERE fechaConfirmacion = CAST(GETDATE() AS DATE)
-	GROUP BY cobrado);
+    SELECT
+        CASE 
+            WHEN cobrado = 0 THEN 'No cobrados'
+            WHEN cobrado = 1 THEN 'Cobrados'
+        END AS estadoCobro,
+        COUNT(*) AS cantidad
+    FROM Donativos
+    WHERE fechaConfirmacion = CAST(GETDATE() AS DATE)
+    GROUP BY cobrado
+    UNION
+    SELECT
+        'Promesas' AS estadoCobro,
+        SUM(COUNT(*)) OVER () AS cantidad
+    FROM Donativos
+    WHERE fechaConfirmacion = CAST(GETDATE() AS DATE)
+);
 
 GO
 
@@ -121,7 +143,7 @@ CREATE FUNCTION ObtenerRecibosCobradosPorZona()
 RETURNS TABLE
 AS
 RETURN (
-SELECT municipio, COUNT(*) AS cantidad
+	SELECT municipio, COUNT(*) AS cantidad
 	FROM Donativos
 	INNER JOIN Donantes ON Donativos.folioDonante = Donantes.folioDonante
 	INNER JOIN Direcciones ON Donantes.folioDonante = Direcciones.folioDonante
@@ -131,11 +153,23 @@ SELECT municipio, COUNT(*) AS cantidad
 GO
 
 -- Obtener dinero recolectado en los últimos 5 días (HU10 - C4)
-CREATE FUNCTION ObtenerIngresosUltimos5Dias()
+CREATE FUNCTION ObtenerImportes()
 RETURNS TABLE
 AS
 RETURN (
-    SELECT fechaCobro, SUM(monto) AS sumatoriaMontos
+	SELECT
+		CASE 
+			WHEN cobrado = 0 THEN 'No cobrados'
+			WHEN cobrado = 1 THEN 'Cobrados'
+		END AS estadoCobro,
+		SUM(monto) AS sumatoriaMontos
+	FROM Donativos
+    WHERE fechaConfirmacion = CAST(GETDATE() AS DATE)
+    GROUP BY cobrado
+    UNION
+    SELECT
+        'Promesas' AS estadoCobro,
+        SUM(monto) OVER () AS sumatoriaMontos
     FROM Donativos
-    WHERE fechaCobro >= DATEADD(DAY, -5, GETDATE()) -- Obtener los donativos de los últimos 5 días
-    GROUP BY fechaCobro);
+    WHERE fechaConfirmacion = CAST(GETDATE() AS DATE)
+);

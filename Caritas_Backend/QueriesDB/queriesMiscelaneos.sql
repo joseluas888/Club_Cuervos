@@ -38,7 +38,7 @@ WHERE idUsuario = @idUsuarioAnterior AND folioRecibo = 12381; -- Cambiar valores
 
 ----------------------------------------- Llamadas a las funciones y stored procedures -----------------------------------------
 
--- Así llamas el SP de CrearDonante
+-- Así llamas al SP de CrearDonante
 EXEC CrearDonante
 	@folioDonante = 1234, -- Cambiar valores aqui
     @nombre = 'Alejandro', -- Cambiar valores aqui
@@ -65,14 +65,17 @@ SELECT * FROM VerificarCredencialesUsuario('alex', '70eb343a455abb8f48b713f49fcf
 -- Así llamas la función ObtenerRecibosUsuario (HU2 Y HU9)
 SELECT * FROM ObtenerRecibosUsuario(1); -- Cambiar el parámetro por el idUsuario
 
--- Así llamas a la función CobrarRecibo (HU3)
+-- Así llamas al SP CobrarRecibo (HU3)
 EXEC CobrarRecibo
 	@folioRecibo = 1001; -- Cambiar el parámetro por el folioRecibo
 
--- Así llamas a la función ComentarRecibo (HU3)
+-- Así llamas al SP ComentarRecibo (HU3)
 EXEC ComentarRecibo
 	@folioRecibo = 1001, -- Cambiar el parámetro por el folioRecibo
 	@comentarios = 'No se cobro'; -- Cambiar el parámetro por los comentarios
+
+-- Así llamas a la función VerificarCredencialesAdministrador (HU7)
+SELECT * FROM VerificarCredencialesAdministrador('admin', '70eb343a455abb8f48b713f49fcf68320b91a615aac44afbc10984b71c3e5710');
 
 -- Así llamas a la función ObtenerRecolectores (HU8)
 SELECT * FROM ObtenerRecolectores();
@@ -83,6 +86,5 @@ SELECT * FROM ObtenerRecibosCobradosNoCobrados();
 -- Así llamas a la función ObtenerRecibosCobradosPorZona (HU10 - C3)
 SELECT * FROM ObtenerRecibosCobradosPorZona();
 
--- Así llamas a la función ObtenerIngresosUltimos5Dias (HU10 - C4)
-SELECT * FROM ObtenerIngresosUltimos5Dias() ORDER BY fechaCobro ASC;
--- La cláusula ORDER BY debe ir fuera de la llamada de la función porque, por sintaxis de SQL Server, no es posible usarla dentro de una función
+-- Así llamas a la función ObtenerImportes (HU10 - C4)
+SELECT * FROM ObtenerImportes();
