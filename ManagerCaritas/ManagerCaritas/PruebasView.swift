@@ -9,99 +9,45 @@ import SwiftUI
 import Charts
 
 
-
-struct Receipt:Decodable {
-    let estadoCobro: String
-    let cantidad: Int
-}
-
-
 struct PruebasView: View {
-    
-    
-    var cobrados:String = "Cobrados - 80"
-    var nocobrados:String = "No cobrados - 20"
-    
-    //Grfica de pastel
-    var dataPie = [
-        (98.0, Color.azulito),
-        (19.0, naranja)
-        
-    ]
-    
-    
-    var body: some View {
-        ScrollView{
-            //Header
-            VStack(alignment: .leading){
-                HeaderGraficasView(texto: "Información")
-                    .padding(.top, 10.0)
-                    .padding(.leading, 10.0)
-                Divider()
-                
-                
-                //Grafica de pastel
-                VStack{
-                    
-                    Text("Recibos totales")
-                        .font(.headline)
-                    
-                    
-                    HStack{
-                        PieChartView(slices: dataPie, isDonut: true, hasGap: true)
-                            .padding()
-                        
-                        
-                        VStack{
-                            
-                            Text(cobrados)
-                                .font(.caption)
-                                .multilineTextAlignment(.center)
-                                .padding(5)
-                                .foregroundColor(.azulito)
-                                .bold()
-                            Text(nocobrados)
-                                .font(.caption)
-                                .multilineTextAlignment(.center)
-                                .padding(5)
-                                .foregroundColor(naranja)
-                                .bold()
-                        }
-                        onAppear {
-                                    getPaidUnpaidReceipts { receipts, error in
-                                        if let receipts = receipts {
-                                            // Actualizar los datos en la vista con los datos obtenidos
-                                            // Aquí puedes actualizar cobrados, nocobrados, dataPie, etc.
-                                            // Por ejemplo:
-                                            let totalReceipts = receipts.reduce(0) { $0 + $1.cantidad }
-                                            let paid = receipts.filter { $0.estadoCobro == "Pagado" }.count
-                                            let unpaid = totalReceipts - paid
+    @StateObject var pieChartData = PieChartData()
 
-                                            cobrados = "Cobrados - \(paid)"
-                                            nocobrados = "No cobrados - \(unpaid)"
-                                            
-                                            // Actualizar la gráfica de pastel con los nuevos datos
-                                            dataPie = [
-                                                (Double(paid), Color.green), // Por ejemplo, usar verde para los cobrados
-                                                (Double(unpaid), Color.red) // Rojo para los no cobrados
-                                            ]
-                                        } else if let error = error {
-                                            // Manejar el error, por ejemplo, mostrar una alerta
-                                            print("Error obteniendo datos: \(error.localizedDescription)")
-                                        }
-                                    }
-                                }
-                    }
-                    Divider()
-                }.padding()
+    var body: some View {
+        ScrollView {
+            // ... Tu código existente para el encabezado y otras partes de la vista
+
+            VStack {
+                Text("Recibos totales")
+                    .font(.headline)
+
+                if !pieChartData.dataPie.isEmpty {
+                    PieChartView(slices: pieChartData.dataPie, isDonut: true, hasGap: true)
+                        .padding()
+
+                    // Aquí puedes eliminar la sección VStack que muestra los detalles de los recibos
+                    // Ya que ahora mostrarás los datos en el gráfico de pastel
+                } else {
+                    // Mensaje de carga o mensaje cuando no hay datos
+                    Text("Cargando datos...")
+                }
+
+                Divider()
             }
+            .padding()
         }
+        .onAppear(perform: {
+            // Llama al método fetchData en la instancia de PieChartData
+            pieChartData.fetchData()
+        })
     }
 }
+    
+
 
 struct PruebasView_Previews: PreviewProvider {
     static var previews: some View {
         PruebasView()
     }
 }
+
 

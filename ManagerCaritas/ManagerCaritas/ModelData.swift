@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 func CallAPIUsuario(_ usuario: String, _ contrasena: String, completion: @escaping (Bool) -> Void) {
     let url = URL(string: "https://equipo18.tc2007b.tec.mx:8443/login_admin")!
@@ -132,43 +133,55 @@ func getCollectors(completion: @escaping ([Collector]?, Error?) -> Void) {
 }
 
 
+
 //Recibos
 
-struct Receipt:Decodable {
-    let estadoCobro: String
+
+struct ReceiptData: Codable {
     let cantidad: Int
+    let estadoCobro: String
 }
 
-func getPaidUnpaidReceipts(completion: @escaping ([Receipt]?, Error?) -> Void) {
-    let urlString = "https://equipo18.tc2007b.tec.mx:8443/paid_unpaid_receipts"
-    
-    guard let url = URL(string: urlString) else {
-        completion(nil, nil)
-        return
+class PieChartData: ObservableObject {
+    @Published var dataPie: [(Double, Color)] = []
+
+    func fetchData() {
+        guard let url = URL(string: "https://equipo18.tc2007b.tec.mx:8443/paid_unpaid_receipts") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                do {
+                    let decodedData = try JSONDecoder().decode([ReceiptData].self, from: data)
+
+                    DispatchQueue.main.async { [self] in
+                        self.dataPie = decodedData.map { (Double($0.cantidad), self.getColorForEstado($0.estadoCobro)) }
+                    }
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                }
+            }
+        }.resume()
     }
-    
-    var request = URLRequest(url: url)
-    request.setValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
-    request.httpMethod = "GET"
-    
-    URLSession.shared.dataTask(with: request) { data, response, error in
-        if let error = error {
-            completion(nil, error)
-            return
+
+    private func getColorForEstado(_ estado: String) -> Color {
+        switch estado {
+        case "Cobrados":
+            return .blue
+        case "No cobrados":
+            return .orange
+        case "Promesas":
+            return .green
+        default:
+            return .gray
         }
-        
-        guard let data = data else {
-            completion(nil, nil)
-            return
-        }
-        
-        do {
-            let receipts = try JSONDecoder().decode([Receipt].self, from: data)
-            completion(receipts, nil)
-        } catch {
-            completion(nil, error)
-        }
-    }.resume()
+    }
 }
 
 
