@@ -13,6 +13,7 @@ var blanco:Color = Color(red:0.9882352941176471, green:0.9803921568627451, blue:
 var negro:Color = Color(red:0.17254901960784313, green:0.17254901960784313, blue:0.17254901960784313)
 var naranja:Color = Color(red:1, green:0.4627450980392157, blue:0.17254901960784313)
 var verde:Color = Color(red:0.792156862745098, green:0.8666666666666667, blue:0.8274509803921568)
+var morado:Color = Color(red:0.61, green:0.32, blue:0.55)
 
 struct PaginaPrincipalView: View {
     @State private var selectedTab: Tab = .recolectores

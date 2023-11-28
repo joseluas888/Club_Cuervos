@@ -173,11 +173,11 @@ class PieChartData: ObservableObject {
     private func getColorForEstado(_ estado: String) -> Color {
         switch estado {
         case "Cobrados":
-            return .blue
+            return azul
         case "No cobrados":
-            return .orange
+            return naranja
         case "Promesas":
-            return .green
+            return morado
         default:
             return .gray
         }

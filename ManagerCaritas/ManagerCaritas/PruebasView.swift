@@ -14,18 +14,79 @@ struct PruebasView: View {
 
     var body: some View {
         ScrollView {
-            // ... Tu código existente para el encabezado y otras partes de la vista
+            //Header
+            VStack(alignment: .leading){
+                HeaderGraficasView(texto: "Información")
+                    .padding(.top, 10.0)
+                    .padding(.leading, 10.0)
+                Divider()
+            }
 
             VStack {
                 Text("Recibos totales")
                     .font(.headline)
-
+                
                 if !pieChartData.dataPie.isEmpty {
-                    PieChartView(slices: pieChartData.dataPie, isDonut: true, hasGap: true)
-                        .padding()
+                    VStack{
+                        
+                        HStack{
+                            PieChartView(slices: pieChartData.dataPie, isDonut: true, hasGap: true)
+                                .padding()
+                            VStack{
 
-                    // Aquí puedes eliminar la sección VStack que muestra los detalles de los recibos
-                    // Ya que ahora mostrarás los datos en el gráfico de pastel
+                                HStack{
+                                    Text("Cobrados")
+                                        .font(.caption)
+                                        .multilineTextAlignment(.trailing)
+                                        .padding(5)
+                                        .foregroundColor(.azulito)
+                                        .bold()
+                                    
+                                    Text("\(String(format: "%.0f", pieChartData.dataPie[0].0))")
+                                        .font(.caption)
+                                        .multilineTextAlignment(.trailing)
+                                        .padding(5)
+                                        .foregroundColor(.red)
+                                        .bold()
+                                }
+
+                                HStack{
+                                    Text("No Cobrados")
+                                        .font(.caption)
+                                        .multilineTextAlignment(.trailing)
+                                        .padding(5)
+                                        .foregroundColor(naranja)
+                                        .bold()
+                                    
+                                    Text("\(String(format: "%.0f", pieChartData.dataPie[1].0))")
+                                        .font(.caption)
+                                        .multilineTextAlignment(.trailing)
+                                        .padding(5)
+                                        .foregroundColor(naranja)
+                                        .bold()
+                                }
+
+                                HStack{
+                                    Text("Promesa")
+                                        .font(.caption)
+                                        .multilineTextAlignment(.trailing)
+                                        .padding(5)
+                                        .foregroundColor(morado)
+                                        .bold()
+                                    
+                                    Text("\(String(format: "%.0f", pieChartData.dataPie[2].0))")
+                                        .font(.caption)
+                                        .multilineTextAlignment(.trailing)
+                                        .padding(5)
+                                        .foregroundColor(morado)
+                                        .bold()
+                                }
+
+                                
+                            }
+                        }
+
+                    }
                 } else {
                     // Mensaje de carga o mensaje cuando no hay datos
                     Text("Cargando datos...")
