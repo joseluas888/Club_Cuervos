@@ -54,21 +54,21 @@ struct PaginaPrincipalView: View {
                             Button(action: {
                                 showingLogoutConfirmation = true
                             }) {
-                                Image(systemName: "arrow.left")
+                                Image(systemName: "rectangle.portrait.and.arrow.forward")
                                     .resizable()
                                     .frame(width: 24, height: 24)
                                     .foregroundColor(Color.black)
                             }
                             .alert(isPresented: $showingLogoutConfirmation) {
                                 Alert(
-                                    title: Text("Cerrar Sesión"),
-                                    message: Text("¿Estás seguro de que quieres cerrar sesión?"),
+                                    title: Text("Cerrar sesión"),
+                                    message: Text("¿Estás seguro que quieres cerrar sesión?"),
                                     primaryButton: .default(Text("Sí")) {
                                         showingLoginView.toggle()
                                     },
                                     secondaryButton: .cancel(Text("No"))
                                 )
-                            }
+                            }.navigationBarHidden(true)
                         }
                     }
                 }
@@ -80,7 +80,7 @@ struct PaginaPrincipalView: View {
                     .hidden()
                 )
             }
-        }
+        }.navigationBarHidden(true)
         .onAppear {
             // Cambiar el color de la flecha de retroceso a negro
             UINavigationBar.appearance().tintColor = .black
