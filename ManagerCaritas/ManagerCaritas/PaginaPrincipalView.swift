@@ -54,7 +54,7 @@ struct PaginaPrincipalView: View {
                             Button(action: {
                                 showingLogoutConfirmation = true
                             }) {
-                                Image(systemName: "rectangle.portrait.and.arrow.forward")
+                                Image(systemName: "arrow.left")
                                     .resizable()
                                     .frame(width: 24, height: 24)
                                     .foregroundColor(Color.black)
@@ -68,7 +68,7 @@ struct PaginaPrincipalView: View {
                                     },
                                     secondaryButton: .cancel(Text("No"))
                                 )
-                            }.navigationBarHidden(true)
+                            }
                         }
                     }
                 }
@@ -80,7 +80,7 @@ struct PaginaPrincipalView: View {
                     .hidden()
                 )
             }
-        }.navigationBarHidden(true)
+        }
         .onAppear {
             // Cambiar el color de la flecha de retroceso a negro
             UINavigationBar.appearance().tintColor = .black

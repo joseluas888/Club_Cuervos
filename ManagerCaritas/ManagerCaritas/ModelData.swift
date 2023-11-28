@@ -55,10 +55,8 @@ func CallAPIUsuario(_ usuario: String, _ contrasena: String, completion: @escapi
     task.resume()
 }
 
-//La funciones de abajo NO ESTÁN ACTUALIZADAS, SON COPIADAS Y PEGADAS DE LA OTRA APPA
-
 func fetchRecibos(forUserID userID: Int, completion: @escaping ([Recibo]?) -> Void) {
-    if let url = URL(string: "http://10.14.255.86:8084/receipts/\(userID)") {
+    if let url = URL(string: "https://equipo18.tc2007b.tec.mx:8443/receipts/\(userID)") {
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 print("Error al hacer la solicitud: \(error.localizedDescription)")
@@ -86,71 +84,169 @@ func fetchRecibos(forUserID userID: Int, completion: @escaping ([Recibo]?) -> Vo
     }
 }
 
-func markReceiptAsPaid(folioRecibo: Int, completion: @escaping (Bool, Error?) -> Void) {
-    let urlString = "http://10.14.255.86:8084/paid/\(folioRecibo)"
+
+
+
+
+//LO QUE ME AYUDÓ JOSÉ
+
+//Collector
+struct Collector: Decodable {
+    let idUsuario: Int
+    let nombre: String
+    let apellidoPaterno: String
+    let apellidoMaterno: String
+    let zona: String
+}
+
+func getCollectors(completion: @escaping ([Collector]?, Error?) -> Void) {
+    let urlString = "https://equipo18.tc2007b.tec.mx:8443/collectors"
     
     guard let url = URL(string: urlString) else {
-        completion(false, nil)
+        completion(nil, nil)
         return
     }
     
     var request = URLRequest(url: url)
-    request.httpMethod = "PUT"
+    request.setValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
+    request.httpMethod = "GET"
     
     URLSession.shared.dataTask(with: request) { data, response, error in
         if let error = error {
-            completion(false, error)
+            completion(nil, error)
             return
         }
         
-        guard let httpResponse = response as? HTTPURLResponse else {
-            completion(false, nil)
+        guard let data = data else {
+            completion(nil, nil)
             return
         }
         
-        if httpResponse.statusCode == 200 {
-            completion(true, nil)
-        } else {
-            completion(false, nil)
+        do {
+            let collectors = try JSONDecoder().decode([Collector].self, from: data)
+            completion(collectors, nil)
+        } catch {
+            completion(nil, error)
         }
     }.resume()
 }
 
-func updateCommentForReceipt(folioRecibo: Int, comment: String, completion: @escaping (Bool, Error?) -> Void) {
-    let urlString = "http://10.14.255.86:8084/comment/\(folioRecibo)"
+
+//Recibos
+
+struct Receipt:Decodable {
+    let estadoCobro: String
+    let cantidad: Int
+}
+
+func getPaidUnpaidReceipts(completion: @escaping ([Receipt]?, Error?) -> Void) {
+    let urlString = "https://equipo18.tc2007b.tec.mx:8443/paid_unpaid_receipts"
     
     guard let url = URL(string: urlString) else {
-        completion(false, nil)
+        completion(nil, nil)
         return
     }
     
     var request = URLRequest(url: url)
-    request.httpMethod = "PUT"
-    
-    let json: [String: Any] = ["comment": comment]
-    guard let jsonData = try? JSONSerialization.data(withJSONObject: json) else {
-        completion(false, nil)
-        return
-    }
-    
-    request.httpBody = jsonData
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
+    request.httpMethod = "GET"
     
     URLSession.shared.dataTask(with: request) { data, response, error in
         if let error = error {
-            completion(false, error)
+            completion(nil, error)
             return
         }
         
-        guard let httpResponse = response as? HTTPURLResponse else {
-            completion(false, nil)
+        guard let data = data else {
+            completion(nil, nil)
             return
         }
         
-        if httpResponse.statusCode == 200 {
-            completion(true, nil)
-        } else {
-            completion(false, nil)
+        do {
+            let receipts = try JSONDecoder().decode([Receipt].self, from: data)
+            completion(receipts, nil)
+        } catch {
+            completion(nil, error)
         }
     }.resume()
 }
+
+
+//Recibo por zona
+struct ReceiptByZone:Decodable {
+    let municipio: String
+    let cantidad: Int
+}
+
+func getPaidReceiptsByZone(completion: @escaping ([ReceiptByZone]?, Error?) -> Void) {
+    let urlString = "https://equipo18.tc2007b.tec.mx:8443/paid_receipts_by_zone"
+    
+    guard let url = URL(string: urlString) else {
+        completion(nil, nil)
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.setValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
+    request.httpMethod = "GET"
+    
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            completion(nil, error)
+            return
+        }
+        
+        guard let data = data else {
+            completion(nil, nil)
+            return
+        }
+        
+        do {
+            let receiptsByZone = try JSONDecoder().decode([ReceiptByZone].self, from: data)
+            completion(receiptsByZone, nil)
+        } catch {
+            completion(nil, error)
+        }
+    }.resume()
+}
+
+//Ingresos - Dinero
+
+struct Income:Decodable {
+    let estadoCobro: String
+    let sumatoriaMontos: Double
+}
+
+func getIncomeLast5Days(completion: @escaping ([Income]?, Error?) -> Void) {
+    let urlString = "https://equipo18.tc2007b.tec.mx:8443/income_last_5_days"
+    
+    guard let url = URL(string: urlString) else {
+        completion(nil, nil)
+        return
+    }
+    
+    var request = URLRequest(url: url)
+    request.setValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
+    request.httpMethod = "GET"
+    
+    URLSession.shared.dataTask(with: request) { data, response, error in
+        if let error = error {
+            completion(nil, error)
+            return
+        }
+        
+        guard let data = data else {
+            completion(nil, nil)
+            return
+        }
+        
+        do {
+            let income = try JSONDecoder().decode([Income].self, from: data)
+            completion(income, nil)
+        } catch {
+            completion(nil, error)
+        }
+    }.resume()
+}
+
+

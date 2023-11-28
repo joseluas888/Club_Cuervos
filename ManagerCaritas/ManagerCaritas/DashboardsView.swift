@@ -19,6 +19,7 @@ extension Color{
 
 struct DashboardsView: View {
     
+    
     var cobrados:String = "Cobrados - 80"
     var nocobrados:String = "No cobrados - 20"
     
@@ -63,11 +64,11 @@ struct DashboardsView: View {
                     
                     Text("Recibos totales")
                         .font(.headline)
-                        .padding()
+                       
                     
                     HStack{
                         PieChartView(slices: dataPie, isDonut: true, hasGap: true)
-                        
+                            .padding()
                         VStack{
                             
                             Text(cobrados)
@@ -75,11 +76,13 @@ struct DashboardsView: View {
                                 .multilineTextAlignment(.center)
                                 .padding(5)
                                 .foregroundColor(.azulito)
+                                .bold()
                             Text(nocobrados)
                                 .font(.caption)
                                 .multilineTextAlignment(.center)
                                 .padding(5)
                                 .foregroundColor(naranja)
+                                .bold()
                         }
                     }
                     Divider()
