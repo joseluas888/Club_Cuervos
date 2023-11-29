@@ -1,170 +1,156 @@
 //
-//  GraficasView.swift
+//  PruebasView.swift
 //  ManagerCaritas
 //
-//  Created by Alumno on 21/11/23.
+//  Created by Alumno on 28/11/23.
 //
 
 import SwiftUI
 import Charts
 
-extension Color{
-    public static var negro: Color{
-        return Color(UIColor(red:0.17254901960784313, green:0.17254901960784313, blue:0.17254901960784313, alpha: 1.0))
-    }
-    public static var azulito: Color{
-        return Color(UIColor(red: 0 / 255, green: 144 / 255, blue: 161 / 255, alpha: 1.0))
-    }
-}
 
 struct DashboardsView: View {
+    @StateObject var pieChartData = PieChartData()
+    @StateObject var barChartData = ZoneChartData()
+    @StateObject var incomeChartData = IncomeChartData()
     
-    
-    var cobrados:String = "Cobrados - 80"
-    var nocobrados:String = "No cobrados - 20"
-    
-    
-    //Grfica de pastel
-    let dataPie = [
-        (98.0, Color.azulito),
-        (19.0, naranja)
-        
-    ]
-
-    //Grafica de barras
-    let dataBarChart: [Zona] = [
-        Zona(id:1, tipo: "Escobedo", votos: 15),
-        Zona(id:2, tipo: "San Pedro", votos: 8),
-        Zona(id:3, tipo: "San Nicolás", votos: 10),
-        Zona(id:4, tipo: "Guadalupe", votos: 3),
-        Zona(id:5, tipo: "Cumbres", votos: 7),
-    ]
-    
-    //Grafica de linea
-    let dataLinesXY = [
-        Punto(x:0, y:0),
-        Punto(x:1, y:80),
-        Punto(x:2, y:20),
-        Punto(x:3, y:100)
-
-    ]
     
     var body: some View {
-        ScrollView{
-        //Header
-            VStack(alignment: .leading){
-                HeaderGraficasView(texto: "Información")
-                    .padding(.top, 10.0)
-                    .padding(.leading, 10.0)
-                Divider()
-                
-                
-                //Grafica de pastel
-                VStack{
-                    
-                    Text("Recibos totales")
-                        .font(.headline)
-                       
-                    
-                    HStack{
-                        PieChartView(slices: dataPie, isDonut: true, hasGap: true)
-                            .padding()
-                        VStack{
-                            
-                            Text(cobrados)
-                                .font(.caption)
-                                .multilineTextAlignment(.center)
-                                .padding(5)
-                                .foregroundColor(.azulito)
-                                .bold()
-                            Text(nocobrados)
-                                .font(.caption)
-                                .multilineTextAlignment(.center)
-                                .padding(5)
-                                .foregroundColor(naranja)
-                                .bold()
-                        }
-                    }
+            ScrollView {
+                //Header
+                VStack(alignment: .leading){
+                    HeaderGraficasView(texto: "Información")
+                        .padding(.top, 10.0)
+                        .padding(.leading, 10.0)
                     Divider()
-                }.padding()
-                
-                
-                //Grafica de barras
-                VStack{
-                    
-                    Text("Cantidad de recibos cobrados")
-                        .font(.headline)
-                        .padding()
-                    
-                    Chart(dataBarChart) {item in
-                        BarMark(
-                            x: .value("Comida", item.tipo),
-                            y: .value("Votos", item.votos)
-                        )
-                    }
-                    .frame(height: 150)
-                    .foregroundColor(.azul)
-                    .padding()
-                    
-                    
-                    Divider()
-                        .padding()
                 }
                 
-                //Grafica de puntos
-                VStack{
+                VStack {
+                    Text("Recibos totales")
+                        .font(.headline)
                     
+                    if !pieChartData.dataPie.isEmpty {
+                        VStack{
+                            
+                            HStack{
+                                PieChartView(slices: pieChartData.dataPie, isDonut: true, hasGap: true)
+                                    .padding()
+                                VStack{
+                                    HStack{
+                                        Text("Cobrados")
+                                            .font(.caption)
+                                            .multilineTextAlignment(.center)
+                                            .padding(5)
+                                            .foregroundColor(azul)
+                                            .bold()
+                                        Text("\(String(format: "%.0f", pieChartData.dataPie[0].0))")
+                                            .font(.caption)
+                                            .multilineTextAlignment(.trailing)
+                                            .padding(5)
+                                            .foregroundColor(azul)
+                                            .bold()
+                                    }
+                                    HStack{
+                                        Text("No Cobrados")
+                                            .font(.caption)
+                                            .multilineTextAlignment(.center)
+                                            .padding(5)
+                                            .foregroundColor(naranja)
+                                            .bold()
+                                        Text("\(String(format: "%.0f", pieChartData.dataPie[1].0))")
+                                            .font(.caption)
+                                            .multilineTextAlignment(.trailing)
+                                            .padding(5)
+                                            .foregroundColor(naranja)
+                                            .bold()
+                                    }
+                                    HStack{
+                                        Text("Promesa")
+                                            .font(.caption)
+                                            .multilineTextAlignment(.center)
+                                            .padding(5)
+                                            .foregroundColor(morado)
+                                            .bold()
+                                        Text("\(String(format: "%.0f", pieChartData.dataPie[2].0))")
+                                            .font(.caption)
+                                            .multilineTextAlignment(.trailing)
+                                            .padding(5)
+                                            .foregroundColor(morado)
+                                            .bold()
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // Mensaje de carga o mensaje cuando no hay datos
+                        Text("Cargando datos...")
+                    }
+                    
+                    Divider()
+                }
+                .padding()
+                
+                // Segunda gráfica (Bar Chart)
+                VStack {
+                    Text("Cantidad de recibos cobrados")
+                        .font(.headline)
+                    
+                    if !barChartData.dataZone.isEmpty {
+                        Chart(barChartData.dataZone) { item in
+                            BarMark(
+                                x: .value("Municipio", item.municipio),
+                                y: .value("Cantidad", item.cantidad)
+                            )
+                        }
+                        .foregroundColor(.azul)
+                        .padding()
+                    } else {
+                        Text("Cargando datos...")
+                    }
+                    
+                    Divider()
+                }.frame(height: 250)
+                    .padding()
+                
+                // Tercera gráfica (XY Chart)
+                VStack {
                     Text("Importe de los recibos")
                         .font(.headline)
                         .padding()
                     
-                    Chart(dataLinesXY) { item in
-                        LineMark(
-                            x: .value("Meses", item.x),
-                            y: .value("Votos", item.y)
-                        )
-                    }.padding()
-                    .frame(height: 150)
-                    .foregroundColor(naranja)
-                    
-                    
+                    if !incomeChartData.dataLinesXY.isEmpty {
+                        Chart(incomeChartData.dataLinesXY) { item in
+                            LineMark(
+                                x: .value("Estado", item.x),
+                                y: .value("Monto", item.y)
+                            )
+                        }
+                        .padding()
+                        .frame(height: 250)
+                        .foregroundColor(naranja)
+                    } else {
+                        Text("Cargando datos...")
+                    }
                 }
-                Divider()
-                    .padding()
-                
-                
-                
-                
             }
+            .background(blanco)
+            .onAppear(perform: {
+                // Llama al método fetchData en la instancia de PieChartData
+                pieChartData.fetchData()
+                barChartData.fetchZoneData()
+                incomeChartData.fetchIncomeData()
+                
+            })
             
         }
     }
-}
 
-//Grafica de barras
- struct Zona: Identifiable{
-    let id: Int
-    let tipo: String
-    let votos: Double
-     
- }
 
-//Grafica de lineas
-struct Punto: Identifiable {
-    let id: Int
-    let x: Int
-    let y: Double
-    init(x: Int, y: Double) {
-        self.id = x
-        self.x = x
-        self.y = y
-    }
-}
-
-        
 struct DashboardsView_Previews: PreviewProvider {
     static var previews: some View {
         DashboardsView()
     }
 }
+ 
+
 

@@ -16,7 +16,6 @@
 		FB2B64E62B0FEB4800EC81F4 /* PlantillaFichaCobradaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2B64E52B0FEB4800EC81F4 /* PlantillaFichaCobradaView.swift */; };
 		FB82DEC52B11188300871CFB /* HeaderGraficasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82DEC42B11188300871CFB /* HeaderGraficasView.swift */; };
 		FB82DEC92B11198C00871CFB /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82DEC82B11198C00871CFB /* PieChartView.swift */; };
-		FB82DECD2B1666A000871CFB /* PruebasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB82DECC2B1666A000871CFB /* PruebasView.swift */; };
 		FB9CC1BB2AF8929A00259439 /* ManagerCaritasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9CC1BA2AF8929A00259439 /* ManagerCaritasApp.swift */; };
 		FB9CC1BD2AF8929A00259439 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB9CC1BC2AF8929A00259439 /* ContentView.swift */; };
 		FB9CC1BF2AF892A600259439 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FB9CC1BE2AF892A600259439 /* Assets.xcassets */; };
@@ -38,7 +37,6 @@
 		FB2B64E52B0FEB4800EC81F4 /* PlantillaFichaCobradaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantillaFichaCobradaView.swift; sourceTree = "<group>"; };
 		FB82DEC42B11188300871CFB /* HeaderGraficasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderGraficasView.swift; sourceTree = "<group>"; };
 		FB82DEC82B11198C00871CFB /* PieChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartView.swift; sourceTree = "<group>"; };
-		FB82DECC2B1666A000871CFB /* PruebasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PruebasView.swift; sourceTree = "<group>"; };
 		FB9CC1B72AF8929A00259439 /* ManagerCaritas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ManagerCaritas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FB9CC1BA2AF8929A00259439 /* ManagerCaritasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerCaritasApp.swift; sourceTree = "<group>"; };
 		FB9CC1BC2AF8929A00259439 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -96,7 +94,6 @@
 				FB1AE1442B0FC424005AE26A /* RecibosPagadosView.swift */,
 				FB1AE1462B0FC437005AE26A /* RecibosNoPagadosView.swift */,
 				FBDAC5BA2B0696380072A345 /* DashboardsView.swift */,
-				FB82DECC2B1666A000871CFB /* PruebasView.swift */,
 				FB9CC1CC2AF894DB00259439 /* ModelData.swift */,
 				FB9CC1BE2AF892A600259439 /* Assets.xcassets */,
 				FB9CC1C02AF892A600259439 /* Preview Content */,
@@ -192,7 +189,6 @@
 				FB9CC1C92AF8931800259439 /* LoginView.swift in Sources */,
 				FB9CC1CD2AF894DB00259439 /* ModelData.swift in Sources */,
 				FB1AE1472B0FC437005AE26A /* RecibosNoPagadosView.swift in Sources */,
-				FB82DECD2B1666A000871CFB /* PruebasView.swift in Sources */,
 				FB1AE13F2B0FC35E005AE26A /* HeaderParaRecolectoresView.swift in Sources */,
 				FB1AE1412B0FC3A2005AE26A /* TabRecibosView.swift in Sources */,
 				FB82DEC92B11198C00871CFB /* PieChartView.swift in Sources */,

@@ -231,8 +231,14 @@ struct IncomeData: Codable {
     let sumatoriaMontos: Double
 }
 
+struct IncomeDataItem: Identifiable {
+    let id = UUID()
+    let x: String
+    let y: Double
+}
+
 class IncomeChartData: ObservableObject {
-    @Published var dataLinesXY: [(x: String, y: Double)] = []
+    @Published var dataLinesXY: [IncomeDataItem] = []
 
     func fetchIncomeData() {
         guard let url = URL(string: "https://equipo18.tc2007b.tec.mx:8443/income_last_5_days") else {
@@ -250,7 +256,7 @@ class IncomeChartData: ObservableObject {
                     let decodedData = try JSONDecoder().decode([IncomeData].self, from: data)
 
                     DispatchQueue.main.async { [self] in
-                        self.dataLinesXY = decodedData.map { ($0.estadoCobro, $0.sumatoriaMontos) }
+                        self.dataLinesXY = decodedData.map { IncomeDataItem(x: $0.estadoCobro, y: $0.sumatoriaMontos) }
                     }
                 } catch {
                     print("Error decoding JSON: \(error)")
@@ -259,6 +265,7 @@ class IncomeChartData: ObservableObject {
         }.resume()
     }
 }
+
 
 
 
