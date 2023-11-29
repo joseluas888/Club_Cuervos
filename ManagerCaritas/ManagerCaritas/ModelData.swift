@@ -135,8 +135,6 @@ func getCollectors(completion: @escaping ([Collector]?, Error?) -> Void) {
 
 
 //Recibos
-
-
 struct ReceiptData: Codable {
     let cantidad: Int
     let estadoCobro: String
@@ -184,82 +182,83 @@ class PieChartData: ObservableObject {
     }
 }
 
-
-//Recibo por zona
-struct ReceiptByZone:Decodable {
+//Por Zona
+struct ZoneReceiptData: Codable, Identifiable {
+    let id = UUID()
     let municipio: String
     let cantidad: Int
 }
 
-func getPaidReceiptsByZone(completion: @escaping ([ReceiptByZone]?, Error?) -> Void) {
-    let urlString = "https://equipo18.tc2007b.tec.mx:8443/paid_receipts_by_zone"
-    
-    guard let url = URL(string: urlString) else {
-        completion(nil, nil)
-        return
-    }
-    
-    var request = URLRequest(url: url)
-    request.setValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
-    request.httpMethod = "GET"
-    
-    URLSession.shared.dataTask(with: request) { data, response, error in
-        if let error = error {
-            completion(nil, error)
-            return
-        }
-        
-        guard let data = data else {
-            completion(nil, nil)
-            return
-        }
-        
-        do {
-            let receiptsByZone = try JSONDecoder().decode([ReceiptByZone].self, from: data)
-            completion(receiptsByZone, nil)
-        } catch {
-            completion(nil, error)
-        }
-    }.resume()
+struct ZoneReceiptDataItem: Identifiable {
+    let id = UUID()
+    let municipio: String
+    let cantidad: Int
 }
 
-//Ingresos - Dinero
+class ZoneChartData: ObservableObject {
+    @Published var dataZone: [ZoneReceiptDataItem] = []
 
-struct Income:Decodable {
+    func fetchZoneData() {
+        guard let url = URL(string: "https://equipo18.tc2007b.tec.mx:8443/paid_receipts_by_zone") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                do {
+                    let decodedData = try JSONDecoder().decode([ZoneReceiptData].self, from: data)
+
+                    DispatchQueue.main.async { [self] in
+                        self.dataZone = decodedData.map { ZoneReceiptDataItem(municipio: $0.municipio, cantidad: $0.cantidad) }
+                    }
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                }
+            }
+        }.resume()
+    }
+}
+
+
+//Ingresos - Dinero
+struct IncomeData: Codable {
     let estadoCobro: String
     let sumatoriaMontos: Double
 }
 
-func getIncomeLast5Days(completion: @escaping ([Income]?, Error?) -> Void) {
-    let urlString = "https://equipo18.tc2007b.tec.mx:8443/income_last_5_days"
-    
-    guard let url = URL(string: urlString) else {
-        completion(nil, nil)
-        return
+class IncomeChartData: ObservableObject {
+    @Published var dataLinesXY: [(x: String, y: Double)] = []
+
+    func fetchIncomeData() {
+        guard let url = URL(string: "https://equipo18.tc2007b.tec.mx:8443/income_last_5_days") else {
+            print("Invalid URL")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.addValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                do {
+                    let decodedData = try JSONDecoder().decode([IncomeData].self, from: data)
+
+                    DispatchQueue.main.async { [self] in
+                        self.dataLinesXY = decodedData.map { ($0.estadoCobro, $0.sumatoriaMontos) }
+                    }
+                } catch {
+                    print("Error decoding JSON: \(error)")
+                }
+            }
+        }.resume()
     }
-    
-    var request = URLRequest(url: url)
-    request.setValue("CGDrp4PSEIAdWiMAMRgUIzoaM15luYYp", forHTTPHeaderField: "apikey")
-    request.httpMethod = "GET"
-    
-    URLSession.shared.dataTask(with: request) { data, response, error in
-        if let error = error {
-            completion(nil, error)
-            return
-        }
-        
-        guard let data = data else {
-            completion(nil, nil)
-            return
-        }
-        
-        do {
-            let income = try JSONDecoder().decode([Income].self, from: data)
-            completion(income, nil)
-        } catch {
-            completion(nil, error)
-        }
-    }.resume()
 }
+
 
 
