@@ -120,7 +120,7 @@ def get_income_last_5_days():
     results = mssql.get_income_last_5_days()
     return jsonify(results), 200
     
-API_CERT = '/root/api_https/SSL/equipo18.pem'
+API_CERT = '/root/api_https/SSL/equipo18.cer'
 API_KEY = '/root/api_https/SSL/equipo18_key.pem'
 
 if __name__ == '__main__':
